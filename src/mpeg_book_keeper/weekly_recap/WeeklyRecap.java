@@ -6,15 +6,25 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.lang.InterruptedException;
 
-public class WeeklyRecap {
+import mpeg_book_keeper.SubProcess;
+
+public class WeeklyRecap extends SubProcess {
 
    private static final String newline = System.lineSeparator();
    private static final String RecapFileName = "WeeklyRecap";
-   private static WeeklyRecapGui gui;
+   private String timeSheetFolderStr;
+   private String recapsFolderStr;
    
-   public static void recapWeek(WeeklyRecapGui inGui, String timeSheetFolderStr,
+   public WeeklyRecap(WeeklyRecapGui gui, String timeSheetFolderStr,
    	String recapsFolderStr) {
+   	this.gui = gui;
+   	this.timeSheetFolderStr = timeSheetFolderStr;
+   	this.recapsFolderStr = recapsFolderStr;	
+   }
+   
+   public void run() {
       TimeSheet curTimeSheet;
       String timeSheetFolderPath;
       File timeSheetFolder;
@@ -29,7 +39,6 @@ public class WeeklyRecap {
       File recapFile;
       
       try {
-      	gui = inGui;
          timeSheetFolderPath = timeSheetFolderStr + "/";
          timeSheetFolder = new File(timeSheetFolderPath);
          allTimeSheets = timeSheetFolder.listFiles();
@@ -38,13 +47,17 @@ public class WeeklyRecap {
          failedSheets = new ArrayList<String>();
          allJobs = new ArrayList<Job>();
          
+         gui.resetLog();
+         
          for (File file : allTimeSheets) {
-             if (file.isFile()) {
-                 timeSheetFileNames.add(file.getName());
-             }
+         	pollStop();
+            if (file.isFile()) {
+                timeSheetFileNames.add(file.getName());
+            }
          }
          
          for (String fileName : timeSheetFileNames) {
+         	pollStop();
             try {
                curTimeSheet = new TimeSheet(timeSheetFolderPath + fileName);
                allJobs.addAll(curTimeSheet.getJobs());
@@ -90,6 +103,8 @@ public class WeeklyRecap {
             
          recapFile = new File(recapsFolderStr + "/" +RecapFileName+"_"+date+".xls");
          
+         pollStop();
+         
          if (recapFile.exists() && !recapFile.isDirectory()) {
             try {
                gui.output(newline + "Deleting old recap file " + recapFile.getPath()
@@ -111,8 +126,24 @@ public class WeeklyRecap {
          gui.output("Saving logfile to logfile.txt" + newline);
          gui.saveLogFile(timeSheetFolderPath + "logfile.txt");
       }
+      catch (InterruptedException ex) {
+      	gui.resetLog();
+      	gui.output("Weekly Recap Canceled.");
+      	gui.output("");
+      	gui.output("Cleaning up files...");
+      	cleanUp();
+      	gui.output("");
+      	gui.output("Weekly Recap Terminated.");
+      }
       catch (Exception ex) {
          gui.output("Caught exception" + ex);
       }
+      finally {
+      	gui.processFinishedCallback();
+      }
+   }
+   
+   protected void cleanUp() {
+   
    }
 }

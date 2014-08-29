@@ -5,12 +5,13 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.filechooser.*;
+
 import mpeg_book_keeper.GuiTab;
 import mpeg_book_keeper.SelectionPanel;
+import mpeg_book_keeper.SubProcess;
 
 public class WeeklyRecapGui extends GuiTab {
    
-   private WeeklyRecap weeklyRecap;
    private SelectionPanel timeSheetsFolderSelect;
    private SelectionPanel recapsFolderSelect;
    private String timeSheetsFolderSetting;
@@ -27,30 +28,32 @@ public class WeeklyRecapGui extends GuiTab {
       timeSheetsFolderSelect.foldersOnly();
       
       recapsFolderSelect = new SelectionPanel(recapsFolderSetting,
-      	"Choose TimeSheets Folder");
+      	"Choose Recaps Folder");
       recapsFolderSelect.foldersOnly();
       
       selectionPanels.add(timeSheetsFolderSelect);
       selectionPanels.add(recapsFolderSelect);
+      
+      JTextArea filler = new JTextArea();
+      filler.setBackground(bgColor);
+      filler.setEditable(false);
+      textBoxPanels.add(filler);
    }
    
    public void runProgram() {
       try {
-         if (running == false) {
-            running = true;
-            Thread recapThread = new Thread(new Runnable() {
-               public void run() {
-                  WeeklyRecap.recapWeek((WeeklyRecapGui)gui,
-                  	timeSheetsFolderSelect.getSelection(),
-                  	recapsFolderSelect.getSelection());
-               }
-            });
+         if (running.compareAndSet(false, true)) {
+            process = new WeeklyRecap((WeeklyRecapGui)gui,
+               timeSheetsFolderSelect.getSelection(),
+               recapsFolderSelect.getSelection());
+            Thread recapThread = new Thread(process);
             
             recapThread.start();
          }
       }
       catch (Exception ex) {
          output("Please select the timesheet folder first.");
+         running.set(false);
       }
    }
 }

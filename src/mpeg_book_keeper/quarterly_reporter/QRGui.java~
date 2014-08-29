@@ -34,7 +34,7 @@ public class QRGui extends GuiTab {
       reportsSelector.foldersOnly();
       
       statusSelector = new SelectionPanel(statusFileSetting, "Choose Status File");
-      statusSelector.foldersOnly();
+      statusSelector.filesOnly();
       
       datePanel = new TextPanel("MM/DD");
       yearPanel = new TextPanel("YYYY");
@@ -48,20 +48,13 @@ public class QRGui extends GuiTab {
    }
    
    public void runProgram() {
-      if (running == false) {
-         running = true;
+      if (running.compareAndSet(false, true)) {
          
-         Thread QRThread = new Thread(new Runnable() {
-            public void run() {
-               QuarterlyReporter.makeReport((QRGui)gui,
-               	jcaSelector.getSelection(),
-               	reportsSelector.getSelection(),
-               	statusSelector.getSelection(),
-                  datePanel.getText(), 
-                  yearPanel.getText());
-            }
-         
-         });
+         process = new QuarterlyReporter((QRGui)gui,
+         	jcaSelector.getSelection(), reportsSelector.getSelection(),
+         	statusSelector.getSelection(), datePanel.getText(), 
+            yearPanel.getText());
+         Thread QRThread = new Thread(process);
          
          QRThread.start();
       }

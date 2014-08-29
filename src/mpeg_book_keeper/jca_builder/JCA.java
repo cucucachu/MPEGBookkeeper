@@ -8,6 +8,8 @@ import jxl.read.biff.BiffException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import mpeg_book_keeper.GuiTab;
+
 public class JCA {
    public static final int JobRowNotFound = -1;
    public static final int CurrentWeekColumn = 4;
@@ -21,6 +23,8 @@ public class JCA {
    private static final String ProjectManagerLabel = "PROJ MGR :";
    private static final String FormatCheckString = "JCA Upload Format";
    private static final int ColumnLimit = 60;
+
+	private GuiTab gui;
 
    private String jobNoStr;
    private String week;
@@ -37,11 +41,12 @@ public class JCA {
    private double weeklyVehicleHours;
    private double weeklyFdtTotal;
    
-   public JCA (String jobNoStr, String jcaFolder, String week) {
+   public JCA (String jobNoStr, String jcaFolder, String week, GuiTab gui) {
       this.jobNoStr = jobNoStr;
       this.jcaFolder = jcaFolder;
       this.week = week;
       this.projectManager = null;
+      this.gui = gui;
       jobs = new ArrayList<Job>();
       failedJobs = new ArrayList<Job>();
       jcaOutFile = jcaFolder + "/JCAs_" + week.replace("/", "_") + "/" + jobNoStr + ".xls";
@@ -357,7 +362,7 @@ public class JCA {
    }
    
    private void output(String msg) {
-      JCABuilder.output(msg);
+      gui.output(msg);
    }
 
 }

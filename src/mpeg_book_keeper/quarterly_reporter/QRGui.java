@@ -48,20 +48,13 @@ public class QRGui extends GuiTab {
    }
    
    public void runProgram() {
-      if (running == false) {
-         running = true;
-         
-         Thread QRThread = new Thread(new Runnable() {
-            public void run() {
-               QuarterlyReporter.makeReport((QRGui)gui,
-               	jcaSelector.getSelection(),
-               	reportsSelector.getSelection(),
-               	statusSelector.getSelection(),
-                  datePanel.getText(), 
-                  yearPanel.getText());
-            }
-         
-         });
+      if (running.compareAndSet(false, true)) {
+         gui.resetLog();
+         process = new QuarterlyReporter((QRGui)gui,
+         	jcaSelector.getSelection(), reportsSelector.getSelection(),
+         	statusSelector.getSelection(), datePanel.getText(), 
+            yearPanel.getText());
+         Thread QRThread = new Thread(process);
          
          QRThread.start();
       }

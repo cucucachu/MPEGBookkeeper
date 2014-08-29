@@ -8,13 +8,24 @@ import java.util.Collections;
 import jxl.write.*;
 import jxl.*;
 
-public class PMWorkbookCompiler {
+import mpeg_book_keeper.SubProcess;
+
+public class PMWorkbookCompiler extends SubProcess {
    private static final String ProjectManagerLabel = "PROJ MGR :";
    
-   public static PMGui gui;
+   private String jcaFolderName;
+   private String workbooksFolderName;
+   private String date;
    
-   public static void compilePMWorkbooks(PMGui inGui, String jcaFolderName,
+   public PMWorkbookCompiler(PMGui gui, String jcaFolderName,
    	String workbooksFolderName, String date) {
+   	this.gui = gui;
+   	this.jcaFolderName = jcaFolderName;
+   	this.workbooksFolderName = workbooksFolderName;
+   	this.date = date;
+   }
+   
+   public  void run() {
       ArrayList<String> excluded;
       ArrayList<PMWorkbook> pmWorkbooks;
       PMWorkbook newPMWorkbook;
@@ -27,118 +38,140 @@ public class PMWorkbookCompiler {
       ArrayList<String> tempExcluded;
       String pm;
       
-      gui = inGui;
-      output("Using JCAs from " + jcaFolderName);
-      pmFolderName = workbooksFolderName + "/Project Manager Workbooks" 
-      	+ " " + date.replace('/', '_');
-      pmFolder = new File(pmFolderName);
-      pmFolder.mkdir();
-      output("Created pmFolder at " + pmFolderName);
-      pmWorkbooks = new ArrayList<PMWorkbook>();
-      
-      jcaFolder = new File(jcaFolderName);
-      jcaFiles = jcaFolder.listFiles();
-      
-      jcaFileNames = new ArrayList<JCAFileName>();
-      
-      for (File file : jcaFiles) {
-          if (file.isFile() && file.getAbsolutePath().contains(".xls")) {
-              jcaFileNames.add(new JCAFileName(jcaFolderName + "/" + file.getName()));
-          }
-      }
-      
-      Collections.sort(jcaFileNames);
-      
-      excluded = new ArrayList<String>();
-      
-      output("");
-      
-      for (JCAFileName fileName : jcaFileNames) {
-         String fileNameShort = fileName.getFileName();
-         try {
-            pm = getProjectManager(fileName.getFilePath());
-      
-            found = false;
-            
-            if (pm != null) {
-               for (PMWorkbook pmWorkbook : pmWorkbooks) {
-                  if (pm.compareTo(pmWorkbook.getProjectManager().trim()) == 0) {
-                     try {
-                        pmWorkbook.addSheet(fileName.getFilePath());
-                        output("   " + fileNameShort + " sorted to " 
-                           + pmWorkbook.getProjectManager());
-                     }
-                     catch (Exception ex) {
-                        output("Could not get sheet for " + fileNameShort);
-                        excluded.add(fileNameShort);
-                     }  
-                     found = true;
-                  }
-               }
-               if (found == false) {
-                  try {
-                     output("   Creating workbook for " + pm);
-                     newPMWorkbook = new PMWorkbook(pm, pmFolderName);
-                     newPMWorkbook.addSheet(fileName.getFilePath());
-                     pmWorkbooks.add(newPMWorkbook);
-                  }
-                  catch (Exception ex) {
-                     output("Could not get sheet for " + fileNameShort);
-                     excluded.add(fileNameShort);
-                  }
-               }
-            }
-            else {
-               output("Could not find project manager for " + fileNameShort);
-               excluded.add(fileNameShort);
-            } 
-         
-         }
-         catch (Exception ex) {
-            output("Could not find project manager for " + fileNameShort);
-            output("   " + ex);
-         }
-      }
-      
-      output("");
-      output("List of sorted jcas:");
-      output("");
-      for (PMWorkbook pmWorkbook : pmWorkbooks) {
-         output(pmWorkbook.toString());
-      }
-      
-      output("");
-      for (PMWorkbook pmWorkbook : pmWorkbooks) {
-         try {
-            output("Writing " + pmWorkbook.getProjectManager() + "'s workbook");
-            tempExcluded = pmWorkbook.write();
-            excluded.addAll(tempExcluded);
-            tempExcluded = null;
-         }
-         catch (Exception ex) {
-            output("      Failed to write pmWorkbook for " + pmWorkbook.getProjectManager());
-            output("         " + ex);
-            excluded.addAll(pmWorkbook.getSheets());
-            printStackTrace(ex.getStackTrace());
-         }
-      }
-      
-      if (excluded.size() != 0) {
-         output("");
-         output("The following JCAs could not be sorted. Please add them manually.");
-         for (String job : excluded) 
-            output("   " + job);
-      }
-      
-      output("");
-      output("All done! :)");
-      
       try {
-         gui.saveLogFile(pmFolderName + "/PMWorkbook_logFile");
+		   this.gui = gui;
+		   output("Using JCAs from " + jcaFolderName);
+		   pmFolderName = workbooksFolderName + "/Project Manager Workbooks" 
+		   	+ " " + date.replace('/', '_');
+		   pmFolder = new File(pmFolderName);
+		   pmFolder.mkdir();
+		   output("Created pmFolder at " + pmFolderName);
+		   pmWorkbooks = new ArrayList<PMWorkbook>();
+		   
+		   jcaFolder = new File(jcaFolderName);
+		   jcaFiles = jcaFolder.listFiles();
+		   
+		   jcaFileNames = new ArrayList<JCAFileName>();
+		   
+		   pollStop();
+		   
+		   for (File file : jcaFiles) {
+		       if (file.isFile() && file.getAbsolutePath().contains(".xls")) {
+		           jcaFileNames.add(new JCAFileName(jcaFolderName + "/" + file.getName()));
+		       }
+		   }
+		   
+		   Collections.sort(jcaFileNames);
+		   
+		   excluded = new ArrayList<String>();
+		   
+		   output("");
+		   
+		   for (JCAFileName fileName : jcaFileNames) {
+		   	pollStop();
+		      String fileNameShort = fileName.getFileName();
+		      try {
+		         pm = getProjectManager(fileName.getFilePath());
+		   
+		         found = false;
+		         
+		         if (pm != null) {
+		            for (PMWorkbook pmWorkbook : pmWorkbooks) {
+		               if (pm.compareTo(pmWorkbook.getProjectManager().trim()) == 0) {
+		                  try {
+		                     pmWorkbook.addSheet(fileName.getFilePath());
+		                     output("   " + fileNameShort + " sorted to " 
+		                        + pmWorkbook.getProjectManager());
+		                  }
+		                  catch (Exception ex) {
+		                     output("Could not get sheet for " + fileNameShort);
+		                     excluded.add(fileNameShort);
+		                  }  
+		                  found = true;
+		               }
+		            }
+		            if (found == false) {
+		               try {
+		                  output("   Creating workbook for " + pm);
+		                  newPMWorkbook = new PMWorkbook(pm, pmFolderName, gui);
+		                  newPMWorkbook.addSheet(fileName.getFilePath());
+		                  pmWorkbooks.add(newPMWorkbook);
+		               }
+		               catch (Exception ex) {
+		                  output("Could not get sheet for " + fileNameShort);
+		                  excluded.add(fileNameShort);
+		               }
+		            }
+		         }
+		         else {
+		            output("Could not find project manager for " + fileNameShort);
+		            excluded.add(fileNameShort);
+		         } 
+		      
+		      }
+		      catch (Exception ex) {
+		         output("Could not find project manager for " + fileNameShort);
+		         output("   " + ex);
+		      }
+		   }
+		   
+		   output("");
+		   output("List of sorted jcas:");
+		   output("");
+		   for (PMWorkbook pmWorkbook : pmWorkbooks) {
+		      output(pmWorkbook.toString());
+		   }
+		   
+		   output("");
+		   for (PMWorkbook pmWorkbook : pmWorkbooks) {
+		   	pollStop();
+		      try {
+		         output("Writing " + pmWorkbook.getProjectManager() + "'s workbook");
+		         tempExcluded = pmWorkbook.write();
+		         excluded.addAll(tempExcluded);
+		         tempExcluded = null;
+		      }
+		      catch (Exception ex) {
+		         output("      Failed to write pmWorkbook for " + pmWorkbook.getProjectManager());
+		         output("         " + ex);
+		         excluded.addAll(pmWorkbook.getSheets());
+		         printStackTrace(ex.getStackTrace());
+		      }
+		   }
+		   
+		   if (excluded.size() != 0) {
+		      output("");
+		      output("The following JCAs could not be sorted. Please add them manually.");
+		      for (String job : excluded) 
+		         output("   " + job);
+		   }
+		   
+		   output("");
+		   output("All done! :)");
+		   
+		   try {
+		      gui.saveLogFile(pmFolderName + "/PMWorkbook_logFile");
+		   }
+		   catch (Exception ex) {
+		      gui.output("Warning, failed to save log file");
+		   }
+		}
+		catch (InterruptedException ex) {
+      	gui.resetLog();
+      	gui.output("PM Workbook Compiler Canceled.");
+      	gui.output("");
+      	gui.output("Cleaning up files...");
+      	cleanUp();
+      	gui.output("");
+      	gui.output("Weekly Recap Terminated.");
+		}
+      finally {
+      	gui.processFinishedCallback();
       }
-      catch (Exception ex) {
-         gui.output("Warning, failed to save log file");
-      }
+   }
+   
+   protected void cleanUp() {
+   
    }
    
    // Retrieves the project manager's initials from the JCA file at the path |jcaFile|.
@@ -169,11 +202,7 @@ public class PMWorkbookCompiler {
       return projectManager.trim();
    }
    
-   public static void output(String msg) {
-      gui.output(msg);
-   }
-   
-   public static void printStackTrace(StackTraceElement[] stack) {
+   public void printStackTrace(StackTraceElement[] stack) {
       for (int i = 0; i < stack.length; i++) {
          output("      " + stack[i]);
       }

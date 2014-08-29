@@ -15,6 +15,7 @@ default: \
 	$(ROOT_DIR)GuiTab.class \
 	$(ROOT_DIR)SelectionPanel.class \
 	$(ROOT_DIR)TextPanel.class \
+	$(ROOT_DIR)SubProcess.class \
 	\
 	$(WEEKLY_RECAP_DIR)Job.class \
 	$(WEEKLY_RECAP_DIR)Recap.class \
@@ -76,6 +77,9 @@ $(ROOT_DIR)SelectionPanel.class: $(ROOT_DIR)SelectionPanel.java
 
 $(ROOT_DIR)TextPanel.class: $(ROOT_DIR)TextPanel.java
 	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)TextPanel.java
+
+$(ROOT_DIR)SubProcess.class: $(ROOT_DIR)SubProcess.java
+	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)SubProcess.java
 
 #Weekly Recap
 $(WEEKLY_RECAP_DIR)Job.class: $(WEEKLY_RECAP_DIR)Job.java

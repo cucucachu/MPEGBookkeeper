@@ -15,6 +15,7 @@ public class PMGui extends GuiTab {
 	private PMWorkbookCompiler compiler;
    private SelectionPanel jcaSelector;
    private SelectionPanel workbookFolderSelector;
+   private TextPanel datePanel;
    
    private String jcaFolderSetting;
    private String workbookFolderSetting;
@@ -28,25 +29,31 @@ public class PMGui extends GuiTab {
       
       workbookFolderSelector = new SelectionPanel(workbookFolderSetting, "Choose Workbooks Folder");
       workbookFolderSelector.foldersOnly();
+      datePanel = new TextPanel("MM/DD/YYYY");
       
       selectionPanels.add(jcaSelector);
       selectionPanels.add(workbookFolderSelector);
+      
+      textBoxPanels.add(datePanel);
    }
    
    public void runProgram() {
-      if (running == false) {
-         running = true;
-         
-         Thread pmWorkbookCompilerThread = new Thread(new Runnable() {
-            public void run() {
-               PMWorkbookCompiler.compilePMWorkbooks((PMGui)gui,
-               	jcaSelector.getSelection(),
-               	workbookFolderSelector.getSelection());
-            }
-         });
-         
-         pmWorkbookCompilerThread.start();
-      }
+   	try {
+		   if (running.compareAndSet(false, true)) {
+		   	gui.resetLog();
+		      process = new PMWorkbookCompiler((PMGui)gui,
+            	jcaSelector.getSelection(),
+            	workbookFolderSelector.getSelection(),
+            	datePanel.getText());
+		      Thread pmWorkbookCompilerThread = new Thread(process);
+		      
+		      pmWorkbookCompilerThread.start();
+		   }
+		}
+		catch (Exception ex) {
+			output("PM Compiler failed.");
+			output("   " + ex);
+		}
    }
    
 }

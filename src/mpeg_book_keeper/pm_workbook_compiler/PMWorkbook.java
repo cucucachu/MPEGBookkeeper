@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Calendar;
 
+import mpeg_book_keeper.GuiTab;
+
 public class PMWorkbook {
 
    private static final String newline = System.lineSeparator();
@@ -17,8 +19,10 @@ public class PMWorkbook {
    private String pmFolder;
    private WritableWorkbook workbook;
    private ArrayList<String> sheets;
+   private GuiTab gui;
    
-   public PMWorkbook(String projectManager, String pmFolder) {
+   public PMWorkbook(String projectManager, String pmFolder, GuiTab gui) {
+   	this.gui = gui;
       this.projectManager = projectManager;
       this.pmFolder = pmFolder;
       sheets = new ArrayList<String>();
@@ -143,7 +147,7 @@ public class PMWorkbook {
    }
    
    private void output(String msg) {
-      PMWorkbookCompiler.output(msg);
+      gui.output(msg);
    }
    
    public String toString() {

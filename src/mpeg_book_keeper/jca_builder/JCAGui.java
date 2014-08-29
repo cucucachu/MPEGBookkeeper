@@ -38,20 +38,20 @@ public class JCAGui extends GuiTab {
    }
    
    public void runProgram() {
-      if (running == false) {
-         running = true;
-         
-         Thread jcaBuilderThread = new Thread(new Runnable() {
-            public void run() {
-               JCABuilder.buildJCA((JCAGui)gui,
-               	jcaSelector.getSelection(),
-                  recapSelector.getSelection(),
-                  datePanel.getText());
-            }
-         
-         });
-         
-         jcaBuilderThread.start();
-      }
+   	try {
+		   if (running.compareAndSet(false, true)) {
+		      process = new JCABuilder((JCAGui)gui, jcaSelector.getSelection(),
+		               recapSelector.getSelection(), datePanel.getText());
+		               
+		      Thread jcaBuilderThread = new Thread(process);
+		      
+		      jcaBuilderThread.start();
+		   }
+		}
+		catch (Exception ex) {
+			output("JCABuilder failed");
+			output("   " + ex);
+			running.set(false);
+		}
    }
 }

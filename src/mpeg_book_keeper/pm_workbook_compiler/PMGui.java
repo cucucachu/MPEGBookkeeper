@@ -38,20 +38,22 @@ public class PMGui extends GuiTab {
    }
    
    public void runProgram() {
-      if (running == false) {
-         running = true;
-         
-         Thread pmWorkbookCompilerThread = new Thread(new Runnable() {
-            public void run() {
-               PMWorkbookCompiler.compilePMWorkbooks((PMGui)gui,
-               	jcaSelector.getSelection(),
-               	workbookFolderSelector.getSelection(),
-               	datePanel.getText());
-            }
-         });
-         
-         pmWorkbookCompilerThread.start();
-      }
+   	try {
+		   if (running.compareAndSet(false, true)) {
+		   	gui.resetLog();
+		      process = new PMWorkbookCompiler((PMGui)gui,
+            	jcaSelector.getSelection(),
+            	workbookFolderSelector.getSelection(),
+            	datePanel.getText());
+		      Thread pmWorkbookCompilerThread = new Thread(process);
+		      
+		      pmWorkbookCompilerThread.start();
+		   }
+		}
+		catch (Exception ex) {
+			output("PM Compiler failed.");
+			output("   " + ex);
+		}
    }
    
 }

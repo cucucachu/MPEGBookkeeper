@@ -182,7 +182,7 @@ $(QR_DIR)WriteOff.class: $(QR_DIR)WriteOff.java
 clean:
 	rm $(ROOT_DIR)*.class \
 	$(WEEKLY_RECAP_DIR)*.class \
-	$(JCA_BUILDER_DIR)*.class\
-	$(PM_DIR)*.class\
-	$(QR_DIR)*.class\
+	$(JCA_BUILDER_DIR)*.class \
+	$(PM_DIR)*.class \
+	$(QR_DIR)*.class \
 

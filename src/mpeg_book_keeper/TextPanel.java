@@ -16,7 +16,7 @@ public class TextPanel extends JPanel {
       this.setAlignmentX(Component.RIGHT_ALIGNMENT);
       
       textArea = new JTextArea(text, 1, 15);
-      //textArea.setPreferredSize(new Dimension(100, 25));
+      textArea.setPreferredSize(new Dimension(100, 25));
       textArea.setAlignmentX(Component.RIGHT_ALIGNMENT);
       textArea.setBackground(mpeg_book_keeper.MPEGBookKeeperGui.BANNER_COLOR);
       textArea.setForeground(mpeg_book_keeper.MPEGBookKeeperGui.TEXT_COLOR);

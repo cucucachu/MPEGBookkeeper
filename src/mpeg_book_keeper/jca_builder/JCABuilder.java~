@@ -6,11 +6,24 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import jxl.write.*;
+import java.lang.InterruptedException;
 
-public class JCABuilder {
-   static JCAGui gui;
+import mpeg_book_keeper.SubProcess;
+
+public class JCABuilder extends SubProcess {
    
-   public static void buildJCA(JCAGui inGui, String jcaFolder, String recapFile, String week) {
+   private String jcaFolder;
+   private String recapFile;
+   private String week;
+   
+   public JCABuilder(JCAGui gui, String jcaFolder, String recapFile, String week) {
+   	this.gui = gui;
+   	this.jcaFolder = jcaFolder;
+   	this.recapFile = recapFile;
+   	this.week = week;
+   }
+   
+   public void run() {
       ArrayList<JCA> jcas;
       ArrayList<JCA> missingJCAs;
       ArrayList<JCA> failedJCAs;
@@ -27,13 +40,16 @@ public class JCABuilder {
       File newJCAFolder;
       
       try {
-      	gui = gui;
          newJCAFolderName = jcaFolder + "/JCAs_" + week.replace("/", "_");
          newJCAFolder = new File(newJCAFolderName);
          newJCAFolder.mkdir();
          recap = new Recap(recapFile);
          allJobs = recap.getJobs();
-         jcas = JobSorter.sortJobs(allJobs, jcaFolder, week);
+         
+         pollStop();
+         jcas = JobSorter.sortJobs(allJobs, jcaFolder, week, gui);
+         
+         pollStop();
          missingJCAs = new ArrayList<JCA>();
          failedJCAs = new ArrayList<JCA>();
          jcaRejects = new ArrayList<Rejection>();
@@ -41,6 +57,7 @@ public class JCABuilder {
          failedJobs.addAll(recap.getBadJobs());
          
          for (JCA jca : jcas) {
+         	pollStop();
             gui.output("Writing to " + jca);
             try {
                jca.loadWorkbook();
@@ -106,6 +123,15 @@ public class JCABuilder {
          gui.output("JCA Builder Complete.");
          gui.saveLogFile(newJCAFolderName + "/logFile_" + week.replace("/", "_"));
       }
+      catch (InterruptedException ex) {
+      	gui.resetLog();
+      	gui.output("JCA Builder Canceled.");
+      	gui.output("");
+      	gui.output("Cleaning up files...");
+      	cleanUp();
+      	gui.output("");
+      	gui.output("Weekly Recap Terminated.");      
+      }
       catch (JCANotFoundException ex) {
          System.out.println("Caught exception " + ex);
          gui.output(ex.getMessage());
@@ -122,8 +148,7 @@ public class JCABuilder {
       }
    }
    
+   protected void cleanUp() {
    
-   public static void output(String msg) {
-      gui.output(msg);
    }
 }
