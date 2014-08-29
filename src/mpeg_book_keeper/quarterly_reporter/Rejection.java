@@ -1,0 +1,17 @@
+package mpeg_book_keeper.quarterly_reporter;
+
+public class Rejection {
+
+   private String name;
+   private String reason;
+   
+   public Rejection(String name, String reason) {
+      this.name = name;
+      this.reason = reason;
+   }
+   
+   public String toString() {
+      return name + ": " + reason;
+   }
+
+}

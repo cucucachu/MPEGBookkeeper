@@ -1,0 +1,156 @@
+package mpeg_book_keeper;
+
+import javax.swing.*;
+import javax.imageio.ImageIO;
+import java.io.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import mpeg_book_keeper.weekly_recap.*;
+import mpeg_book_keeper.jca_builder.*;
+import mpeg_book_keeper.pm_workbook_compiler.*;
+import mpeg_book_keeper.quarterly_reporter.*;
+
+import java.awt.event.*;
+import javax.swing.filechooser.*;
+
+public class MPEGBookKeeperGui implements ActionListener {
+   private static boolean busy = false;
+   public static final Color BG_COLOR = new Color(228, 228, 228, 255);
+   public static final Color TAB_COLOR = new Color(200, 221, 242, 255);
+   public static final Color PARCHMENT_COLOR = new Color(241, 241, 211, 255);
+   public static final Color BANNER_COLOR = new Color(48, 10, 36, 255);
+   public static final Color BUTTON_COLOR = new Color(200, 221, 242, 255);
+   public static final Color TEXT_COLOR = new Color(227, 219, 219, 255);
+   public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+   
+   private JFrame frame;
+   private JTabbedPane tabs;
+   
+   private JPanel panel;
+   private JPanel bannerPanel;
+   
+   private JMenuBar menuBar;
+   private JMenu helpMenu;
+   private JMenu settingsMenu;
+   private JMenuItem settingsButton;
+   private JMenuItem helpButton;
+   
+   private JButton weeklyRecapButton;
+   private JButton jcaBuilderButton;
+   private JButton pmWorkbookCompilerButton;
+   private JButton quarterlyReporterButton;
+   private JLabel banner;
+   private ImageIcon icon;
+   
+   private WeeklyRecapGui wrGui;
+   private JCAGui jcaGui;
+   private PMGui pmGui;
+   private QRGui qrGui;
+   
+   public MPEGBookKeeperGui() {
+   	Container pane;
+   	
+      frame = new JFrame("MPEG Book Keeper");
+      tabs = new JTabbedPane();
+      
+      panel = new JPanel();
+      bannerPanel = new JPanel();
+      pane = frame.getContentPane();
+      
+      try  {
+	      banner = new JLabel(new ImageIcon(ImageIO.read(
+	      	new File("/home/cody/Professional/MillerPacific/MPEGBookKeeper/resources/banner.png"))));
+	   	icon = new ImageIcon(ImageIO.read(
+	   		new File("/home/cody/Professional/MillerPacific/MPEGBookKeeper/resources/book.png")));
+	   }
+	   catch(IOException ex) {
+	   	System.out.println("Could not find banner");
+	   }
+      
+      menuBar = new JMenuBar();
+      //menuBar.setBackground(BANNER_COLOR);
+      
+      helpMenu = new JMenu("Help");
+      helpButton = new JMenuItem("User Manual");
+      helpButton.addActionListener(this);
+      helpMenu.add(helpButton);
+      menuBar.add(helpMenu);
+      
+      settingsMenu = new JMenu("Settings");
+      settingsButton = new JMenuItem("Edit Settings");
+      settingsButton.addActionListener(this);
+      settingsMenu.add(settingsButton);
+      menuBar.add(settingsMenu);
+      
+      weeklyRecapButton = new JButton("Weekly Recap");
+      weeklyRecapButton.addActionListener(this);
+      
+      jcaBuilderButton = new JButton("JCA Builder");
+      jcaBuilderButton.addActionListener(this);
+      
+      pmWorkbookCompilerButton = new JButton("PM Workbook Compiler");
+      pmWorkbookCompilerButton.addActionListener(this);
+      
+      quarterlyReporterButton = new JButton("Quarterly Reporter");
+      quarterlyReporterButton.addActionListener(this);
+      
+      bannerPanel.setBackground(BANNER_COLOR);
+      bannerPanel.add(banner);
+      
+      tabs.setBackground(BG_COLOR);
+      
+      wrGui = new WeeklyRecapGui();
+      tabs.addTab("Weekly Recap", wrGui);
+      
+      jcaGui = new JCAGui();
+      tabs.addTab("JCA Builder", jcaGui);
+      
+      pmGui = new PMGui();
+      tabs.addTab("PM Workbook Compiler", pmGui);
+      
+      qrGui = new QRGui();
+      tabs.addTab("Quarterly Reporter", qrGui);
+      
+      panel.setBackground(BANNER_COLOR);
+      panel.setLayout(new BorderLayout());
+      panel.add(bannerPanel, BorderLayout.PAGE_START);
+      panel.add(tabs, BorderLayout.CENTER);
+      
+      frame.setJMenuBar(menuBar);
+      frame.add(panel);
+      frame.setIconImage(icon.getImage());
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setResizable(true);
+      frame.setSize(1024, 700);
+      frame.setVisible(true);
+   }
+   
+   public void actionPerformed(ActionEvent e) {
+      String source = e.getActionCommand();
+      
+      if (source.compareTo("User Manual") == 0) {
+         openUserManual();
+      }
+      else if (source.compareTo("Edit Settings") == 0) {
+         editSettings();
+      }
+   }
+   
+   private void openUserManual() {
+   	File userManual;
+   	
+   	userManual = new File("../docs/Manual/MPEGBookKeeperUserManual.pdf");
+   	try {
+   		if (Desktop.isDesktopSupported())
+   			Desktop.getDesktop().open(userManual);	
+   	}
+   	catch (Exception ex) {
+   		System.out.println(ex);
+   	}
+   }
+   
+   private void editSettings() {
+   	MPEGBookKeeper.settingsGui = new SettingsGui(MPEGBookKeeper.settings);
+   }
+}

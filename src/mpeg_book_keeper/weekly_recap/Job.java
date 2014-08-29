@@ -1,0 +1,91 @@
+package mpeg_book_keeper.weekly_recap;
+
+public class Job implements Comparable<Job> {
+   String jobName;
+   String jobNoStr;
+   String initials;
+   String classCode;
+   double hours;
+   String miles;
+   String fdt;
+   String other;
+   String type;
+   String prevWage;
+   
+   
+   public Job(String jobName, String jobNoStr, String initials, String classCode,
+      String hours, String miles, String fdt, String other, String type,
+      String prevWage) {
+      
+      this.jobName = jobName;
+      this.jobNoStr = jobNoStr;
+      this.initials = initials;
+      this.classCode = classCode;
+      this.hours = Double.parseDouble(hours);
+      this.miles = miles;
+      this.fdt = fdt;
+      this.other = other;
+      this.type = type;
+      this.prevWage = prevWage;
+      
+      emptyStringsToNull();
+   }
+   
+   public int compareTo(Job other) {
+      String jobNo;
+      String otherJobNo;
+      int comparison;
+      
+      jobNo = this.jobNoStr;
+      jobNo.replace('-', '.');
+      
+      otherJobNo = other.jobNoStr;
+      otherJobNo.replace('-', '.');
+      
+      if (jobNo.contains(".")) {
+         for (int digits = jobNo.indexOf('.'); digits < 6; digits++)
+            jobNo = "0" + jobNo;
+            
+         for (int digits = jobNo.length() - 1 - jobNo.indexOf('.');
+            digits < 6; digits++)
+            jobNo = jobNo + "0";
+      }
+      
+      if (otherJobNo.contains(".")) {
+         for (int digits = otherJobNo.indexOf('.'); digits < 6; digits++)
+            otherJobNo = "0" + otherJobNo;
+            
+         for (int digits = otherJobNo.length() - 1 - otherJobNo.indexOf('.');
+            digits < 6; digits++)
+            otherJobNo = otherJobNo + "0";
+      }
+      
+      comparison = jobNo.compareTo(otherJobNo);
+      
+      return comparison;
+      
+   }
+   
+   public String toString() {
+      return jobName + ": " + jobNoStr;
+   }
+   
+   private void emptyStringsToNull() {
+      if (jobName != null && jobName.isEmpty())
+         jobName = null;
+      if (initials != null && initials.isEmpty())
+         initials = null;
+      if (classCode != null && classCode.isEmpty())
+         classCode = null;
+      if (miles != null && miles.isEmpty())
+         miles = null;
+      if (fdt != null && fdt.isEmpty())
+         fdt = null;
+      if (other != null && other.isEmpty())
+         other = null;
+      if (type != null && type.isEmpty())
+         type = null;
+      if (prevWage != null && prevWage.isEmpty())
+         prevWage = null;
+   }
+}

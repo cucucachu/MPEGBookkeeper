@@ -1,0 +1,263 @@
+package mpeg_book_keeper.quarterly_reporter;
+
+import jxl.*;
+import jxl.write.*;
+import java.io.File;
+import java.io.IOException;
+import jxl.read.biff.BiffException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class QuarterlyReporter {
+   static QRGui gui;
+
+   public static void makeReport(QRGui inGui, String jcaFolderName, String reportsFolderName, 
+      String statusFileName, String date, String year) {
+      File jcaFolder;
+      File[] jcaFiles;
+      File reportsFolder;
+      StatusFile statusFile;
+      ArrayList<JCAFileName> jcaFileNames;
+      ArrayList<JCA> jcas;
+      ArrayList<JCA> scarabs;
+      //ArrayList<JCA> failedJCAs;
+      ArrayList<Rejection> failedJCAs;
+      JCA newJCA;
+      
+      ArrayList<Project> projects;
+      ArrayList<Project> failedProjects;
+      Project newProject;
+      String projectNumber;
+      String projectName;
+      String projectManager;
+      Double unbilledCharges;
+      Double remainingBudget;
+      String soc;
+      
+      ArrayList<QuarterlyReport> reports;
+      ArrayList<QuarterlyReport> failedReports;
+      QuarterlyReport newReport;
+      
+      gui = inGui;
+      jcaFolder = new File(jcaFolderName);
+      jcaFiles = jcaFolder.listFiles();
+      
+      jcaFileNames = new ArrayList<JCAFileName>();
+      
+      reportsFolder = new File(reportsFolderName + "/WIP REPORTS " 
+      	+ date.replace('/', '_') + year.replace('/', '_'));
+      reportsFolder.mkdir();
+      reportsFolderName = reportsFolder.getPath();
+      
+      for (File file : jcaFiles) {
+          if (file.isFile() && file.getAbsolutePath().contains(".xls")) {
+              jcaFileNames.add(new JCAFileName(jcaFolderName + "/" + file.getName()));
+          }
+      }
+      
+      output("");
+      output("Reading job status report from database.");
+      try {
+         statusFile = new StatusFile(statusFileName);
+      }
+      catch (IOException | BiffException ex) {
+         output("   Database excel file " + statusFileName + " appears corrupt. "
+            + "Terminating program.");
+         output("      " + ex.getMessage());
+         //printStackTrace(ex.getStackTrace());
+         return;
+      }
+      catch (ArrayIndexOutOfBoundsException ex) {
+         output("   Cannot read database file " + statusFileName);
+         output("   Please open the file in excel, and save it.");
+         output("      " + ex.getMessage());
+         //printStackTrace(ex.getStackTrace());
+         return;
+      }
+      output("   Status file read succesfully.");
+      
+      jcas = new ArrayList<JCA>();
+      failedJCAs = new ArrayList<Rejection>();
+      scarabs = new ArrayList<JCA>();
+      
+      output("");
+      output("Finding JCAs with unbilled charges.");
+      
+      try {
+         Collections.sort(jcaFileNames);
+      }
+      catch (Exception ex) {
+         output("   Sorting failed.");
+      }
+      
+      for (JCAFileName jcaFileName : jcaFileNames) {
+         newJCA = new JCA(jcaFileName.getFilePath());
+         try {
+            if (newJCA.getUnbilledCharges() != 0) {
+               jcas.add(newJCA);
+               output("   " + jcaFileName + " has unbilled charges.");
+            }
+            else {
+               output("   " + jcaFileName 
+                  + " does not have any unbilled charges.");
+               output("      Checking for recent writeOffs.");
+               if (newJCA.recentWriteOffs(year)) {
+                  jcas.add(newJCA);
+                  output("         " + jcaFileName + " has recent write offs.");
+               }
+               else {
+                  output("         " + jcaFileName + " does not have any "
+                     + "recent write offs.");
+               }
+            }
+         }
+         catch (Exception ex) {
+            output("   " + jcaFileName
+               + "'s unbilled charges or write offs could not be read.");
+            output("      " + ex);
+            failedJCAs.add(new Rejection(jcaFileName.toString(), ex.getMessage()));
+         }
+      }
+      
+      output("");
+      output("Sorting JCAs.");
+      try {
+         Collections.sort(jcas);
+      }
+      catch (Exception ex) {
+         output("   Sorting failed.");
+      }
+      
+      output("");
+      output("Gathering project info from JCAs.");
+      
+      projects = new ArrayList<Project>();
+      failedProjects = new ArrayList<Project>();
+      
+      for (JCA jca : jcas) {
+         output("   Reading " + jca + "'s project info.");
+         try {
+            projectNumber = jca.getProjectNumber();
+            projectName = jca.getProjectName();
+            projectManager = jca.getManager();
+            unbilledCharges = jca.getUnbilledCharges();
+            remainingBudget = jca.getRemainingBudget();
+            soc = jca.getSoc();
+            
+            if (jca.getScarab() != 0)
+               scarabs.add(jca);
+            
+            newProject = new Project(projectNumber, projectName, projectManager,
+               unbilledCharges, remainingBudget, soc);
+               
+            newProject.setStatus(statusFile.getStatus(projectNumber));
+            
+            newProject.setWriteOffs(jca.getWriteOffs(year));
+            
+            projects.add(newProject);
+         }
+         catch (Exception ex) {
+            output("      " + jca + " failed.");
+            output("         " + ex);
+            failedJCAs.add(new Rejection(jca.getFileName(), ex.getMessage()));
+         }
+      }
+      
+      statusFile.close();
+      
+      output("");
+      output("Sorting projects into quarterly reports.");
+      
+      reports = new ArrayList<QuarterlyReport>();
+      boolean found;
+      
+      for (Project project : projects) {
+         found = false;
+         output("   Sorting " + project);
+         try {
+            for (QuarterlyReport report : reports) {
+               if (project.getManager().compareTo(report.getManager()) == 0) {
+                  output("      Sorted to " + report.getManager());
+                  report.addProject(project);
+                  found = true;
+               }
+            }
+            if (found == false) {
+               output("      Sorted to " + project.getManager() + ". New report.");
+               newReport = new QuarterlyReport(reportsFolderName, project.getManager(),
+                  date + "/" + year);
+               newReport.addProject(project);
+               reports.add(newReport);
+            }
+         }
+         catch (Exception ex) {
+            output("      Project " + project + "could not be read.");
+            output("         " + ex);
+            failedProjects.add(project);
+         }
+      }
+      
+      output("");
+      output("Writing Quarterly Reports.");
+      failedReports = new ArrayList<QuarterlyReport>();
+      
+      for (QuarterlyReport report : reports) {
+         output("   Writing " + report.getManager() + "'s report.");
+         try {
+            report.write();
+         }
+         catch (Exception ex) {
+            output("      " + report.getManager() + "'s report failed.");
+            output("         " + ex);
+            failedReports.add(report);
+         }
+      }
+      
+      output("");
+      output("The following JCAs could not be read:");
+      for (Rejection reject : failedJCAs)
+         output("   " + reject);
+      
+      /*
+      output("");
+      output("Have Cody check these:");
+      for (JCA jca : scarabs)
+         output("   " + jca);
+      */   
+      output("");
+      output("The following projects could not be sorted:");
+      for (Project project : failedProjects) 
+         output("   " + project);
+      
+      output("");
+      output("The following reports failed to write:");
+      for (QuarterlyReport report : failedReports)
+         output("   " + report.getManager());
+      
+      output("");
+      output("Saving log file in " + (new File(reportsFolderName).getName()));
+      
+      
+      try {
+         gui.saveLogFile(reportsFolderName + "/logFile.txt");
+      }
+      catch (IOException ex) {
+         output("   Could not save logfile. " + ex);
+      }
+      
+      
+      output("");
+      output("Quarterly Reports complete.");
+   }
+   
+   public static void output(String msg) {
+      System.out.println(msg);
+      gui.output(msg);
+   }
+   
+   public static void printStackTrace(StackTraceElement[] stack) {
+      for (int i = 0; i < stack.length; i++) {
+         output("      " + stack[i]);
+      }
+   }
+}

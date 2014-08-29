@@ -1,0 +1,23 @@
+JavaPackages = mpeg_book_keeper \
+	  
+JavaLibraries = jxl.jar \
+
+JavaMainClass = \
+	mpeg_book_keeper.MPEGBookKeeper
+
+RunParameters =
+
+# Javadoc
+JavadocWindowTitle = 'MPEG Book Keeper'
+JavadocDocTitle    = 'MPEG Book Keeper'
+JavadocHeader      = 'MPEG Book Keeper'
+JavadocFooter      = '<font size="-1">Cody Jones 2014</font>'
+
+DEV_ROOT = ~/Professional/MillerPacific/MPEGBookKeeper/
+
+IS_UNIX = true
+
+JAVA_HOME = /usr/lib/jvm/default-java/
+
+include $(DEV_ROOT)/make/Makefile
+

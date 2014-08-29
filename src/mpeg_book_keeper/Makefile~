@@ -1,0 +1,9 @@
+  Source = \
+          MPEGBookKeeper.java \
+          MPEGBookKeeperGui.java \
+
+  RmiSource =
+
+  Main      = MPEGBookKeeper
+
+  include $(DEV_ROOT)/Makefile
