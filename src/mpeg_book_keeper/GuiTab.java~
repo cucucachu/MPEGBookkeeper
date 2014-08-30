@@ -83,7 +83,9 @@ public abstract class GuiTab extends JPanel implements ActionListener {
       
       inputPanel.add(selectionPanels);
       inputPanel.add(textBoxPanels);
+      inputPanel.add(Box.createVerticalGlue());
       inputPanel.add(runButton);
+      inputPanel.add(Box.createRigidArea(new Dimension(0,5))); 
       inputPanel.add(stopButton);
       
       this.add(inputPanel, BorderLayout.EAST);

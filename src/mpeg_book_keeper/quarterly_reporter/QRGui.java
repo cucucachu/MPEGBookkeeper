@@ -36,8 +36,8 @@ public class QRGui extends GuiTab {
       statusSelector = new SelectionPanel(statusFileSetting, "Choose Status File");
       statusSelector.filesOnly();
       
-      datePanel = new TextPanel("MM/DD");
-      yearPanel = new TextPanel("YYYY");
+      datePanel = new TextPanel("Week Ending Date:", "MM/DD");
+      yearPanel = new TextPanel("Year:            ", "YYYY");
       
       selectionPanels.add(jcaSelector);
       selectionPanels.add(reportsSelector);

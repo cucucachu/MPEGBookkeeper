@@ -1,3 +1,5 @@
+package mpeg_book_keeper.quarterly_reporter;
+
 import jxl.*;
 import jxl.write.*;
 import java.io.File;
@@ -49,16 +51,7 @@ public class JCA implements Comparable<JCA> {
       this.file = new File(fileName);
       opened = 0;
       sheetNo = -1;
-      scarab = new Double(0);
-      
-      
-      /*try {
-         outputJCA();
-      }
-      catch(Exception ex) {
-      
-      }*/
-      
+      scarab = new Double(0);      
    }
    
    public String getProjectNumber() throws JCAException, IOException, 
@@ -659,7 +652,7 @@ public class JCA implements Comparable<JCA> {
                   total += new Double(valueCell.getContents());
             }
             catch (NumberFormatException ex) {
-               QuarterlyReporter.output("Number format Exception col: " + lastColumn);
+               throw new JCAException("Number format Exception col: " + lastColumn);
             }
             catch (JCAException ex) {
                throw ex;
@@ -874,7 +867,7 @@ public class JCA implements Comparable<JCA> {
             rowStr += cellStr;
             
          }
-         QuarterlyReporter.output(rowStr);
+         //output(rowStr);
       }
    }
 }

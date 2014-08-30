@@ -29,7 +29,8 @@ public class JCAGui extends GuiTab {
       recapSelector = new SelectionPanel(recapFolderSetting, "Choose Recap File");
       recapSelector.filesOnly();
       
-      datePanel = new TextPanel("MM/DD/YYYY");
+      datePanel = new TextPanel("Week Ending Date:", "MM/DD/YYYY");
+      datePanel.setMaximumSize(new Dimension(600,30));
       
       selectionPanels.add(jcaSelector);
       selectionPanels.add(recapSelector);
@@ -47,6 +48,7 @@ public class JCAGui extends GuiTab {
 		      
 		      jcaBuilderThread.start();
 		   }
+		}
 		catch (Exception ex) {
 			output("JCABuilder failed");
 			output("   " + ex);

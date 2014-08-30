@@ -76,14 +76,16 @@ public abstract class GuiTab extends JPanel implements ActionListener {
       runButton.addActionListener(this);
       runButton.setBackground(mpeg_book_keeper.MPEGBookKeeperGui.BUTTON_COLOR);
       
-      stopButton = new JButton("Reset");
+      stopButton = new JButton("Stop");
       stopButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
       stopButton.addActionListener(this);
       stopButton.setBackground(mpeg_book_keeper.MPEGBookKeeperGui.BUTTON_COLOR);
       
       inputPanel.add(selectionPanels);
       inputPanel.add(textBoxPanels);
+      inputPanel.add(Box.createVerticalGlue());
       inputPanel.add(runButton);
+      inputPanel.add(Box.createRigidArea(new Dimension(0,5))); 
       inputPanel.add(stopButton);
       
       this.add(inputPanel, BorderLayout.EAST);
@@ -97,7 +99,7 @@ public abstract class GuiTab extends JPanel implements ActionListener {
       
       if (source.compareTo("Start") == 0)
       	runProgram();
-      else if (source.compareTo("Reset") == 0) {
+      else if (source.compareTo("Stop") == 0) {
       	killProcess();
       }
    }

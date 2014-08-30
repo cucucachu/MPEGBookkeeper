@@ -25,7 +25,7 @@ public class QRGui extends GuiTab {
    public QRGui() {
       jcaFolderSetting = mpeg_book_keeper.MPEGBookKeeper.settings.getJCAFolder();
       reportFolderSetting = mpeg_book_keeper.MPEGBookKeeper.settings.getQuarterlyReportsFolder();
-      statusFileSetting = "~";
+      statusFileSetting = "asdf";
             
       jcaSelector = new SelectionPanel(jcaFolderSetting, "Choose JCA Folder");
       jcaSelector.foldersOnly();
@@ -36,8 +36,8 @@ public class QRGui extends GuiTab {
       statusSelector = new SelectionPanel(statusFileSetting, "Choose Status File");
       statusSelector.filesOnly();
       
-      datePanel = new TextPanel("MM/DD");
-      yearPanel = new TextPanel("YYYY");
+      datePanel = new TextPanel("Week Ending Date:", "MM/DD");
+      yearPanel = new TextPanel("Year:            ", "YYYY");
       
       selectionPanels.add(jcaSelector);
       selectionPanels.add(reportsSelector);
@@ -49,7 +49,7 @@ public class QRGui extends GuiTab {
    
    public void runProgram() {
       if (running.compareAndSet(false, true)) {
-         
+         gui.resetLog();
          process = new QuarterlyReporter((QRGui)gui,
          	jcaSelector.getSelection(), reportsSelector.getSelection(),
          	statusSelector.getSelection(), datePanel.getText(), 

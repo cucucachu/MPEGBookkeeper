@@ -51,16 +51,7 @@ public class JCA implements Comparable<JCA> {
       this.file = new File(fileName);
       opened = 0;
       sheetNo = -1;
-      scarab = new Double(0);
-      
-      
-      /*try {
-         outputJCA();
-      }
-      catch(Exception ex) {
-      
-      }*/
-      
+      scarab = new Double(0);      
    }
    
    public String getProjectNumber() throws JCAException, IOException, 
@@ -223,10 +214,10 @@ public class JCA implements Comparable<JCA> {
       BiffException, NumberFormatException {
       open();
       
-      QuarterlyReporter.output("Column " + col + ":");
+      //output("Column " + col + ":");
       
       for (int i = 0; i < sheet.getRows(); i++)
-         QuarterlyReporter.output("   " + sheet.getCell(col, i).getContents());
+         //output("   " + sheet.getCell(col, i).getContents());
          
       close();
    }
@@ -661,7 +652,7 @@ public class JCA implements Comparable<JCA> {
                   total += new Double(valueCell.getContents());
             }
             catch (NumberFormatException ex) {
-               QuarterlyReporter.output("Number format Exception col: " + lastColumn);
+               throw new JCAException("Number format Exception col: " + lastColumn);
             }
             catch (JCAException ex) {
                throw ex;
@@ -876,7 +867,7 @@ public class JCA implements Comparable<JCA> {
             rowStr += cellStr;
             
          }
-         QuarterlyReporter.output(rowStr);
+         //output(rowStr);
       }
    }
 }

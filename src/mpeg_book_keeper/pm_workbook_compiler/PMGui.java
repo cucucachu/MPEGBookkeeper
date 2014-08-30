@@ -29,7 +29,7 @@ public class PMGui extends GuiTab {
       
       workbookFolderSelector = new SelectionPanel(workbookFolderSetting, "Choose Workbooks Folder");
       workbookFolderSelector.foldersOnly();
-      datePanel = new TextPanel("MM/DD/YYYY");
+      datePanel = new TextPanel("Week Ending Date:", "MM/DD/YYYY");
       
       selectionPanels.add(jcaSelector);
       selectionPanels.add(workbookFolderSelector);

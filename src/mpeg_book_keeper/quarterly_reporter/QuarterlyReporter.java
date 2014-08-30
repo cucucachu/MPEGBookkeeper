@@ -62,7 +62,7 @@ public class QuarterlyReporter extends SubProcess {
 		   jcaFileNames = new ArrayList<JCAFileName>();
 		   
 		   reportsFolder = new File(reportsFolderName + "/WIP REPORTS " 
-		   	+ date.replace('/', '_') + year.replace('/', '_'));
+		   	+ date.replace('/', '_') + "_" + year.replace('/', '_'));
 		   reportsFolder.mkdir();
 		   reportsFolderName = reportsFolder.getPath();
 		   
