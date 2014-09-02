@@ -59,12 +59,12 @@ public class MPEGBookKeeperGui implements ActionListener {
       pane = frame.getContentPane();
       
       try  {
-	      banner = new JLabel(new ImageIcon(ImageIO.read(
-	      	new File("/home/cody/Professional/MillerPacific/MPEGBookKeeper/resources/banner.png"))));
-	   	icon = new ImageIcon(ImageIO.read(
-	   		new File("/home/cody/Professional/MillerPacific/MPEGBookKeeper/resources/book.png")));
+	      banner = new JLabel(new ImageIcon(getClass().getClassLoader().getResource(
+	      "resources/banner.png")));
+	   	icon = new ImageIcon(getClass().getClassLoader().getResource(
+	   	"resources/book.png"));
 	   }
-	   catch(IOException ex) {
+	   catch(Exception ex) {
 	   	System.out.println("Could not find banner");
 	   }
       

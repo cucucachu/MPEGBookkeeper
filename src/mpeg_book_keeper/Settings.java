@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Settings {
-	private final String settingsFilePath = "../resources/";
+	private final String settingsFilePath = "./";
 	private final String settingsFileName = "MPEGBookKeeper.dat";
 	private final String MPEGBookKeeperFolderKey = "MPEGBookKeeperFolder";
 	private final String TimeSheetsFolderKey = "TimeSheetsFolder";
@@ -34,7 +34,13 @@ public class Settings {
 		}
 		catch (SettingsException ex) {
 			System.out.println(ex);
-			saveSettings();
+			try {
+				saveSettings();
+			}
+			catch (SettingsException exx) {
+				System.out.println(exx);
+				clearSettings();
+			}
 		}
 	}
 	
@@ -91,6 +97,7 @@ public class Settings {
 			settingsFile.delete();
 		
 		try {
+			System.out.println("Creating settings file at " + settingsFile.getPath());
 			settingsFile.createNewFile();
 		
 			writer = new FileWriter(settingsFile);
