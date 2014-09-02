@@ -358,6 +358,10 @@ public class JCA {
    
    public void delete() {
       File toDelete = new File(jcaOutFile);
+      
+      if (jcaWorkbook != null) {
+      	close();
+      }
       toDelete.delete();
    }
    
