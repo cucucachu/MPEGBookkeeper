@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Calendar;
 
 import mpeg_book_keeper.GuiTab;
+import mpeg_book_keeper.jca_builder.JCAException;
 
 public class PMWorkbook {
 
@@ -67,37 +68,31 @@ public class PMWorkbook {
          for (String sheet : sheets) {
             jobNo = new File(sheet).getName();
             output("   copying sheet from " + jobNo);
-            
-            if (JCAFormat.badFormat(sheet)) {
-               failed.add(jobNo);
-               output("      " + jobNo + " failed. Incorect format.");
+            try {                              
+               jcaWorkbook = Workbook.getWorkbook(new File(sheet));
+               jcaSheet = jcaWorkbook.getSheet(0);
+               
+               copySheet = workbook.createSheet(jcaSheet.getName(), index);
+               
+               copyJCA(jcaSheet, copySheet);
+               JCAFormat.formatJCA(copySheet);
+               index++;
+               jcaWorkbook.close();
+               jcaWorkbook = null;
             }
-            else {
-               try {                              
-                  jcaWorkbook = Workbook.getWorkbook(new File(sheet));
-                  jcaSheet = jcaWorkbook.getSheet(0);
-                  
-                  copySheet = workbook.createSheet(jcaSheet.getName(), index);
-                  
-                  copyJCA(jcaSheet, copySheet);
-                  JCAFormat.formatJCA(copySheet);
-                  index++;
-                  jcaWorkbook.close();
-                  jcaWorkbook = null;
-               }
-               catch (Exception ex) {
-                  output("      failed to copy " + jobNo);
-                  output("         "+ ex);
-                  failed.add(jobNo);
-               }
-               finally {
-                  jcaWorkbook = null;
-               }
+            catch (Exception ex) {
+               output("      failed to copy " + jobNo);
+               output("         "+ ex);
+               failed.add(jobNo);
+            }
+            finally {
+               jcaWorkbook = null;
             }
          }
          
          try {
-            workbook.write(); //IOB Exception?
+         	if (workbook.getNumberOfSheets() > 0)
+	            workbook.write(); //IOB Exception?
          }
          catch (ArrayIndexOutOfBoundsException ex) {
             workbook.close();

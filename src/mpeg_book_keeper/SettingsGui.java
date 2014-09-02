@@ -11,7 +11,7 @@ public class SettingsGui extends JFrame implements ActionListener {
 	private final int buttonWidth = 220;
 	private final int buttonHeight = 25;
 	private final int frameWidth = 900;
-	private final int frameHeight = 300;
+	private final int frameHeight = 280;
 	
 	private JPanel mainPanel;
 	
@@ -130,7 +130,7 @@ public class SettingsGui extends JFrame implements ActionListener {
       saveButton = new JButton("Save");
       saveButton.addActionListener(this);
       
-      mainPanel.add(mpegBookKeeperPanel);
+      //mainPanel.add(mpegBookKeeperPanel);
       mainPanel.add(timeSheetPanel);
       mainPanel.add(recapPanel);
       mainPanel.add(jcaPanel);

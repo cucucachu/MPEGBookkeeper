@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Calendar;
 
+import mpeg_book_keeper.jca_builder.JCAException;
+
 public class JCAFormat {
       
    private static final String FormatCheckString = "JCA Upload Format";
@@ -22,7 +24,7 @@ public class JCAFormat {
    
    //Only to be used on sheets were badFormat(sheet) returns false.
    public static void formatJCA(WritableSheet sheet)
-      throws WriteException {
+      throws WriteException, JCAException {
       int curRow;
       int curCol;
       WritableCell cell;
@@ -40,9 +42,15 @@ public class JCAFormat {
       
       
       rowLimit = sheet.getRows();
-         
-      colLimit = sheet.getColumns();
-   
+      
+      try {
+      	colLimit = lastColumn(sheet) + 1;
+   	}
+   	catch (Exception ex) {
+   		throw new JCAException(ex.toString());
+   	}
+   	
+   	
       delimeters = new int[4];
       delimeters[0] = sheet.findCell(DelimeterOne).getRow();
       delimeters[1] = sheet.findCell(DelimeterTwo).getRow();
@@ -364,4 +372,29 @@ public class JCAFormat {
       
       return bad;
    }   
+   
+   private static int lastColumn(WritableSheet sheet) 
+   	throws JCAException, IOException, BiffException {
+      int col;
+      int row;
+      Cell searchCell;
+      
+      searchCell = sheet.findCell("HRS");
+      
+      if (searchCell == null)
+         throw new JCAException("Could not find label \"HRS\"");
+      
+      row = searchCell.getRow();
+      col = 4;
+      
+      while (searchCell.getContents().compareTo("HRS") == 0) {
+         col++;
+         if (col < sheet.getColumns())
+            searchCell = sheet.getCell(col, row);
+         else
+            break;
+      }
+      
+      return col - 1;
+   }
 }

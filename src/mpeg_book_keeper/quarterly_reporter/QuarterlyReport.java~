@@ -56,13 +56,12 @@ public class QuarterlyReport {
    private ArrayList<Project> projects;
    private String folder;
    private String fileName;
-   private String quarter;
    private String date;
    private File file;
    private WritableWorkbook workbook;
    private WritableSheet sheet;
    
-   public QuarterlyReport(String folder, String manager, String quarter, String date) {
+   public QuarterlyReport(String folder, String manager, String date) {
       Calendar calendar;
       
       
@@ -72,7 +71,6 @@ public class QuarterlyReport {
          calendar.get(Calendar.DATE), calendar.get(Calendar.YEAR));*/
    
       this.folder = folder;
-      this.quarter = quarter;
       this.fileName = folder + "/WIP_Report_" + manager.replace("/", "+") + "_" 
          + date.replace("/", "_") + ".xls";
       this.file = new File(fileName);
@@ -123,7 +121,7 @@ public class QuarterlyReport {
       moneyFormat.setAlignment(jxl.format.Alignment.RIGHT);
       moneyFormat.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN);
       
-      labelCell = new jxl.write.Label(1, TitleRow, Title + date, labelFormat);
+      labelCell = new jxl.write.Label(1, TitleRow, Title + date);//, labelFormat);
       sheet.addCell(labelCell);
       
       labelCell = new jxl.write.Label(ProjectNumberColumn, LabelRow, 

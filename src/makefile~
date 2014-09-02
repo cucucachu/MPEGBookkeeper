@@ -18,41 +18,42 @@ default: \
 	$(BUILD_DIR)$(ROOT_DIR)TextPanel.class \
 	$(BUILD_DIR)$(ROOT_DIR)SubProcess.class \
 	\
-	$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)Job.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)Recap.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)TimeSheetFormatException.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecap.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecapGui.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Job.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Recap.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheetFormatException.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecap.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecapGui.class \
 	\
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCA.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCABuilder.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCAColumn.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCAException.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCANotFoundException.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCAGui.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)Job.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JobSorter.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)Recap.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)RecapFormatException.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)Rejection.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)JCA.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)JCABuilder.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)JCAColumn.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)JCAException.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)JCANotFoundException.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)JCAGui.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)Job.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)JobSorter.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)Recap.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)RecapFormatException.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)Rejection.class \
 	\
-	$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)JCAFileName.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)JCAFormat.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)Job.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)PMGui.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)PMWorkbook.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)PMWorkbookCompiler.class \
+	$(BUILD_DIR)$(PM_DIR)JCAFileName.class \
+	$(BUILD_DIR)$(PM_DIR)JCAFormat.class \
+	$(BUILD_DIR)$(PM_DIR)JCAException.class \
+	$(BUILD_DIR)$(PM_DIR)Job.class \
+	$(BUILD_DIR)$(PM_DIR)PMGui.class \
+	$(BUILD_DIR)$(PM_DIR)PMWorkbook.class \
+	$(BUILD_DIR)$(PM_DIR)PMWorkbookCompiler.class \
 	\
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)JCA.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)JCAException.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)JCAFileName.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)Project.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)QRGui.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)QuarterlyReport.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)QuarterlyReporter.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)Rejection.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)StatusFile.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)WriteOff.class \
+	$(BUILD_DIR)$(QR_DIR)JCA.class \
+	$(BUILD_DIR)$(QR_DIR)JCAException.class \
+	$(BUILD_DIR)$(QR_DIR)JCAFileName.class \
+	$(BUILD_DIR)$(QR_DIR)Project.class \
+	$(BUILD_DIR)$(QR_DIR)QRGui.class \
+	$(BUILD_DIR)$(QR_DIR)QuarterlyReport.class \
+	$(BUILD_DIR)$(QR_DIR)QuarterlyReporter.class \
+	$(BUILD_DIR)$(QR_DIR)Rejection.class \
+	$(BUILD_DIR)$(QR_DIR)StatusFile.class \
+	$(BUILD_DIR)$(QR_DIR)WriteOff.class \
 	
 #MPEG Book Keeper
 $(BUILD_DIR)$(ROOT_DIR)MPEGBookKeeper.class: $(ROOT_DIR)MPEGBookKeeper.java
@@ -83,111 +84,114 @@ $(BUILD_DIR)$(ROOT_DIR)SubProcess.class: $(ROOT_DIR)SubProcess.java
 	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)SubProcess.java
 
 #Weekly Recap
-$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)Job.class: $(WEEKLY_RECAP_DIR)Job.java
+$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Job.class: $(WEEKLY_RECAP_DIR)Job.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)Job.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)Recap.class: $(WEEKLY_RECAP_DIR)Recap.java
+$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Recap.class: $(WEEKLY_RECAP_DIR)Recap.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)Recap.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)TimeSheetFormatException.class: $(WEEKLY_RECAP_DIR)TimeSheetFormatException.java
+$(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheetFormatException.class: $(WEEKLY_RECAP_DIR)TimeSheetFormatException.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)TimeSheetFormatException.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecap.class: $(WEEKLY_RECAP_DIR)WeeklyRecap.java
+$(BUILD_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecap.class: $(WEEKLY_RECAP_DIR)WeeklyRecap.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)WeeklyRecap.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecapGui.class: $(WEEKLY_RECAP_DIR)WeeklyRecapGui.java
+$(BUILD_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecapGui.class: $(WEEKLY_RECAP_DIR)WeeklyRecapGui.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)WeeklyRecapGui.java
 
 #JCA Builder
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCA.class: $(JCA_BUILDER_DIR)JCA.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)JCA.class: $(JCA_BUILDER_DIR)JCA.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)JCA.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCABuilder.class: $(JCA_BUILDER_DIR)JCABuilder.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)JCABuilder.class: $(JCA_BUILDER_DIR)JCABuilder.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)JCABuilder.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCAColumn.class: $(JCA_BUILDER_DIR)JCAColumn.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)JCAColumn.class: $(JCA_BUILDER_DIR)JCAColumn.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)JCAColumn.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCAException.class: $(JCA_BUILDER_DIR)JCAException.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)JCAException.class: $(JCA_BUILDER_DIR)JCAException.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)JCAException.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCANotFoundException.class: $(JCA_BUILDER_DIR)JCANotFoundException.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)JCANotFoundException.class: $(JCA_BUILDER_DIR)JCANotFoundException.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)JCANotFoundException.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JCAGui.class: $(JCA_BUILDER_DIR)JCAGui.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)JCAGui.class: $(JCA_BUILDER_DIR)JCAGui.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)JCAGui.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)Job.class: $(JCA_BUILDER_DIR)Job.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)Job.class: $(JCA_BUILDER_DIR)Job.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)Job.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)JobSorter.class: $(JCA_BUILDER_DIR)JobSorter.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)JobSorter.class: $(JCA_BUILDER_DIR)JobSorter.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)JobSorter.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)Recap.class: $(JCA_BUILDER_DIR)Recap.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)Recap.class: $(JCA_BUILDER_DIR)Recap.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)Recap.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)RecapFormatException.class: $(JCA_BUILDER_DIR)RecapFormatException.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)RecapFormatException.class: $(JCA_BUILDER_DIR)RecapFormatException.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)RecapFormatException.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)Rejection.class: $(JCA_BUILDER_DIR)Rejection.java
+$(BUILD_DIR)$(JCA_BUILDER_DIR)Rejection.class: $(JCA_BUILDER_DIR)Rejection.java
 	$(COMPILER) $(CLASSPATH) $(JCA_BUILDER_DIR)Rejection.java
 	
 #PM Workbook Compiler
-$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)JCAFileName.class: $(PM_DIR)JCAFileName.java
+$(BUILD_DIR)$(PM_DIR)JCAFileName.class: $(PM_DIR)JCAFileName.java
 	$(COMPILER) $(CLASSPATH) $(PM_DIR)JCAFileName.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)JCAFormat.class: $(PM_DIR)JCAFormat.java
+$(BUILD_DIR)$(PM_DIR)JCAFormat.class: $(PM_DIR)JCAFormat.java
 	$(COMPILER) $(CLASSPATH) $(PM_DIR)JCAFormat.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)Job.class: $(PM_DIR)Job.java
+$(BUILD_DIR)$(PM_DIR)JCAException.class: $(PM_DIR)JCAException.java
+	$(COMPILER) $(CLASSPATH) $(PM_DIR)JCAException.java
+
+$(BUILD_DIR)$(PM_DIR)Job.class: $(PM_DIR)Job.java
 	$(COMPILER) $(CLASSPATH) $(PM_DIR)Job.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)PMGui.class: $(PM_DIR)PMGui.java
+$(BUILD_DIR)$(PM_DIR)PMGui.class: $(PM_DIR)PMGui.java
 	$(COMPILER) $(CLASSPATH) $(PM_DIR)PMGui.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)PMWorkbook.class: $(PM_DIR)PMWorkbook.java
+$(BUILD_DIR)$(PM_DIR)PMWorkbook.class: $(PM_DIR)PMWorkbook.java $(PM_DIR)JCAFormat.java
 	$(COMPILER) $(CLASSPATH) $(PM_DIR)PMWorkbook.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)PMWorkbookCompiler.class: $(PM_DIR)PMWorkbookCompiler.java
+$(BUILD_DIR)$(PM_DIR)PMWorkbookCompiler.class: $(PM_DIR)PMWorkbookCompiler.java
 	$(COMPILER) $(CLASSPATH) $(PM_DIR)PMWorkbookCompiler.java
 
 #Quarterly Reporter
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)JCA.class: $(QR_DIR)JCA.java
+$(BUILD_DIR)$(QR_DIR)JCA.class: $(QR_DIR)JCA.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)JCA.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)JCAException.class: $(QR_DIR)JCAException.java
+$(BUILD_DIR)$(QR_DIR)JCAException.class: $(QR_DIR)JCAException.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)JCAException.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)JCAFileName.class: $(QR_DIR)JCAFileName.java
+$(BUILD_DIR)$(QR_DIR)JCAFileName.class: $(QR_DIR)JCAFileName.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)JCAFileName.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)Project.class: $(QR_DIR)Project.java
+$(BUILD_DIR)$(QR_DIR)Project.class: $(QR_DIR)Project.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)Project.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)QRGui.class: $(QR_DIR)QRGui.java
+$(BUILD_DIR)$(QR_DIR)QRGui.class: $(QR_DIR)QRGui.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)QRGui.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)QuarterlyReport.class: $(QR_DIR)QuarterlyReport.java
+$(BUILD_DIR)$(QR_DIR)QuarterlyReport.class: $(QR_DIR)QuarterlyReport.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)QuarterlyReport.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)QuarterlyReporter.class: $(QR_DIR)QuarterlyReporter.java
+$(BUILD_DIR)$(QR_DIR)QuarterlyReporter.class: $(QR_DIR)QuarterlyReporter.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)QuarterlyReporter.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)Rejection.class: $(QR_DIR)Rejection.java
+$(BUILD_DIR)$(QR_DIR)Rejection.class: $(QR_DIR)Rejection.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)Rejection.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)StatusFile.class: $(QR_DIR)StatusFile.java
+$(BUILD_DIR)$(QR_DIR)StatusFile.class: $(QR_DIR)StatusFile.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)StatusFile.java
 
-$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)WriteOff.class: $(QR_DIR)WriteOff.java
+$(BUILD_DIR)$(QR_DIR)WriteOff.class: $(QR_DIR)WriteOff.java
 	$(COMPILER) $(CLASSPATH) $(QR_DIR)WriteOff.java
 
 
 
 clean:
 	rm $(BUILD_DIR)$(ROOT_DIR)*.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(WEEKLY_RECAP_DIR)*.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(JCA_BUILDER_DIR)*.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(PM_DIR)*.class \
-	$(BUILD_DIR)$(ROOT_DIR)$(QR_DIR)*.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)*.class \
+	$(BUILD_DIR)$(JCA_BUILDER_DIR)*.class \
+	$(BUILD_DIR)$(PM_DIR)*.class \
+	$(BUILD_DIR)$(QR_DIR)*.class \
 

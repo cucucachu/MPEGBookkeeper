@@ -26,7 +26,10 @@ public class PMWorkbookCompiler extends SubProcess {
    }
    
    public  void run() {
-      ArrayList<String> excluded;
+      ArrayList<String> sortFailed;
+      ArrayList<String> writeFailed;
+      ArrayList<String> incorrectFormat;
+      ArrayList<String> failedPMWorkbooks;
       ArrayList<PMWorkbook> pmWorkbooks;
       PMWorkbook newPMWorkbook;
       String pmFolderName;
@@ -63,9 +66,13 @@ public class PMWorkbookCompiler extends SubProcess {
 		   
 		   Collections.sort(jcaFileNames);
 		   
-		   excluded = new ArrayList<String>();
+		   incorrectFormat = new ArrayList<String>();
+		   sortFailed = new ArrayList<String>();
+		   writeFailed = new ArrayList<String>();
+		   failedPMWorkbooks = new ArrayList<String>();
 		   
 		   output("");
+		   output("Sorting JCAs by Project Manager.");
 		   
 		   for (JCAFileName fileName : jcaFileNames) {
 		   	pollStop();
@@ -75,7 +82,11 @@ public class PMWorkbookCompiler extends SubProcess {
 		   
 		         found = false;
 		         
-		         if (pm != null) {
+		         if (JCAFormat.badFormat(fileName.getFilePath())) {
+						output("   " + fileNameShort + " is incorrectly formatted.");
+						incorrectFormat.add(fileNameShort);
+					}
+		         else if (pm != null) {
 		            for (PMWorkbook pmWorkbook : pmWorkbooks) {
 		               if (pm.compareTo(pmWorkbook.getProjectManager().trim()) == 0) {
 		                  try {
@@ -85,7 +96,7 @@ public class PMWorkbookCompiler extends SubProcess {
 		                  }
 		                  catch (Exception ex) {
 		                     output("Could not get sheet for " + fileNameShort);
-		                     excluded.add(fileNameShort);
+		                     sortFailed.add(fileNameShort);
 		                  }  
 		                  found = true;
 		               }
@@ -93,19 +104,19 @@ public class PMWorkbookCompiler extends SubProcess {
 		            if (found == false) {
 		               try {
 		                  output("   Creating workbook for " + pm);
-		                  newPMWorkbook = new PMWorkbook(pm, pmFolderName);
+		                  newPMWorkbook = new PMWorkbook(pm, pmFolderName, gui);
 		                  newPMWorkbook.addSheet(fileName.getFilePath());
 		                  pmWorkbooks.add(newPMWorkbook);
 		               }
 		               catch (Exception ex) {
 		                  output("Could not get sheet for " + fileNameShort);
-		                  excluded.add(fileNameShort);
+		                  sortFailed.add(fileNameShort);
 		               }
 		            }
 		         }
 		         else {
 		            output("Could not find project manager for " + fileNameShort);
-		            excluded.add(fileNameShort);
+		            sortFailed.add(fileNameShort);
 		         } 
 		      
 		      }
@@ -128,21 +139,44 @@ public class PMWorkbookCompiler extends SubProcess {
 		      try {
 		         output("Writing " + pmWorkbook.getProjectManager() + "'s workbook");
 		         tempExcluded = pmWorkbook.write();
-		         excluded.addAll(tempExcluded);
+		         writeFailed.addAll(tempExcluded);
 		         tempExcluded = null;
 		      }
 		      catch (Exception ex) {
 		         output("      Failed to write pmWorkbook for " + pmWorkbook.getProjectManager());
 		         output("         " + ex);
-		         excluded.addAll(pmWorkbook.getSheets());
+		         writeFailed.addAll(pmWorkbook.getSheets());
+		         failedPMWorkbooks.add(pmWorkbook.getProjectManager());
 		         printStackTrace(ex.getStackTrace());
 		      }
 		   }
 		   
-		   if (excluded.size() != 0) {
+		   if (incorrectFormat.size() != 0) {
+		      output("");
+		      output("The following JCAs are incorrectly formatted.");
+		      for (String job : incorrectFormat) 
+		         output("   " + job);
+		   }
+		   
+		   if (sortFailed.size() != 0) {
 		      output("");
 		      output("The following JCAs could not be sorted. Please add them manually.");
-		      for (String job : excluded) 
+		      for (String job : sortFailed) 
+		         output("   " + job);
+		   }
+		   
+		   if (writeFailed.size() != 0) {
+		      output("");
+		      output("The following JCAs failed to write to a PMWorkbook. Please add them manually.");
+		      for (String job : writeFailed) 
+		         output("   " + job);
+		   }
+		   
+		   
+		   if (failedPMWorkbooks.size() != 0) {
+		      output("");
+		      output("The following PMWorkbooks failed to write.");
+		      for (String job : writeFailed) 
 		         output("   " + job);
 		   }
 		   

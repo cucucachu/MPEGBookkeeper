@@ -121,7 +121,7 @@ public class QuarterlyReport {
       moneyFormat.setAlignment(jxl.format.Alignment.RIGHT);
       moneyFormat.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN);
       
-      labelCell = new jxl.write.Label(1, TitleRow, Title + date, labelFormat);
+      labelCell = new jxl.write.Label(1, TitleRow, Title + date);//, labelFormat);
       sheet.addCell(labelCell);
       
       labelCell = new jxl.write.Label(ProjectNumberColumn, LabelRow, 
@@ -402,7 +402,7 @@ public class QuarterlyReport {
       curRow += 2;
       
       labelCell = new jxl.write.Label(ProjectNameColumn, curRow, 
-         warning, labelFormat);
+         warning);//, labelFormat);
       sheet.addCell(labelCell);
       
       for (int column = 0; column < columnWidths.length; column++)

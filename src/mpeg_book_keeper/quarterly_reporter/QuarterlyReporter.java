@@ -273,12 +273,13 @@ public class QuarterlyReporter extends SubProcess {
 		   output("Quarterly Reports complete.");
 		}
 		catch (InterruptedException ex) {
+      	gui.output("");
       	gui.output("Quarterly Reporter Canceled.");
       	gui.output("");
       	gui.output("Cleaning up files...");
       	cleanUp();
       	gui.output("");
-      	gui.output("Weekly Recap Terminated.");
+      	gui.output("Quarterly Reporter Terminated.");
 		}
 		finally {
 			gui.processFinishedCallback();

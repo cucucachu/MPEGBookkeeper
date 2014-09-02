@@ -62,7 +62,7 @@ public class MPEGBookKeeperGui implements ActionListener {
 	      banner = new JLabel(new ImageIcon(getClass().getClassLoader().getResource(
 	      "resources/banner.png")));
 	   	icon = new ImageIcon(getClass().getClassLoader().getResource(
-	   	"/home/cody/Professional/MillerPacific/MPEGBookKeeper/resources/book.png"));
+	   	"resources/book.png"));
 	   }
 	   catch(Exception ex) {
 	   	System.out.println("Could not find banner");
@@ -140,7 +140,7 @@ public class MPEGBookKeeperGui implements ActionListener {
    private void openUserManual() {
    	File userManual;
    	
-   	userManual = new File("../docs/Manual/MPEGBookKeeperUserManual.pdf");
+   	userManual = new File("./MPEGBookKeeperUserManual.pdf");
    	try {
    		if (Desktop.isDesktopSupported())
    			Desktop.getDesktop().open(userManual);	

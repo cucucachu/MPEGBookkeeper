@@ -62,7 +62,7 @@ public class QuarterlyReporter extends SubProcess {
 		   jcaFileNames = new ArrayList<JCAFileName>();
 		   
 		   reportsFolder = new File(reportsFolderName + "/WIP REPORTS " 
-		   	+ date.replace('/', '_') + year.replace('/', '_'));
+		   	+ date.replace('/', '_') + "_" + year.replace('/', '_'));
 		   reportsFolder.mkdir();
 		   reportsFolderName = reportsFolder.getPath();
 		   
@@ -278,7 +278,7 @@ public class QuarterlyReporter extends SubProcess {
       	gui.output("Cleaning up files...");
       	cleanUp();
       	gui.output("");
-      	gui.output("Weekly Recap Terminated.");
+      	gui.output("Quarterly Reporter Terminated.");
 		}
 		finally {
 			gui.processFinishedCallback();
