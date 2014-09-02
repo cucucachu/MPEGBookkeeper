@@ -56,4 +56,10 @@ public class PMGui extends GuiTab {
 		}
    }
    
+   public void applySettings() {
+   	jcaSelector.applySetting(
+   		mpeg_book_keeper.MPEGBookKeeper.settings.getJCAFolder());
+   	workbookFolderSelector.applySetting(
+   		mpeg_book_keeper.MPEGBookKeeper.settings.getPMWorkbooksFolder());
+   }
 }

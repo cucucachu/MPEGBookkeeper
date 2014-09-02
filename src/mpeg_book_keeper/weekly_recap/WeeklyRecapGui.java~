@@ -34,7 +34,8 @@ public class WeeklyRecapGui extends GuiTab {
       selectionPanels.add(timeSheetsFolderSelect);
       selectionPanels.add(recapsFolderSelect);
       
-      JTextArea filler = new JTextArea().setBackground(bgColor);
+      JTextArea filler = new JTextArea();
+      filler.setBackground(bgColor);
       filler.setEditable(false);
       textBoxPanels.add(filler);
    }
@@ -54,5 +55,12 @@ public class WeeklyRecapGui extends GuiTab {
          output("Please select the timesheet folder first.");
          running.set(false);
       }
+   }
+   
+   public void applySettings() {
+      timeSheetsFolderSelect.applySetting(
+      	mpeg_book_keeper.MPEGBookKeeper.settings.getTimeSheetsFolder());
+      recapsFolderSelect.applySetting(
+      	mpeg_book_keeper.MPEGBookKeeper.settings.getRecapsFolder());
    }
 }

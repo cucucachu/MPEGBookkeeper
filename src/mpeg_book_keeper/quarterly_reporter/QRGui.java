@@ -59,4 +59,9 @@ public class QRGui extends GuiTab {
          QRThread.start();
       }
    }
+   
+   public void applySettings() {
+   	jcaSelector.applySetting(mpeg_book_keeper.MPEGBookKeeper.settings.getJCAFolder());
+   	reportsSelector.applySetting(mpeg_book_keeper.MPEGBookKeeper.settings.getQuarterlyReportsFolder());
+   }
 }

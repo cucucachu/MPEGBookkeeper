@@ -25,7 +25,7 @@ public class QRGui extends GuiTab {
    public QRGui() {
       jcaFolderSetting = mpeg_book_keeper.MPEGBookKeeper.settings.getJCAFolder();
       reportFolderSetting = mpeg_book_keeper.MPEGBookKeeper.settings.getQuarterlyReportsFolder();
-      statusFileSetting = "asdf";
+      statusFileSetting = "~";
             
       jcaSelector = new SelectionPanel(jcaFolderSetting, "Choose JCA Folder");
       jcaSelector.foldersOnly();
@@ -58,5 +58,9 @@ public class QRGui extends GuiTab {
          
          QRThread.start();
       }
+   }
+   
+   public void applySettings() {
+   
    }
 }

@@ -54,4 +54,11 @@ public class JCAGui extends GuiTab {
 			running.set(false);
 		}
    }
+   
+   public void applySettings() {
+   	jcaSelector.applySetting(
+   		mpeg_book_keeper.MPEGBookKeeper.settings.getJCAFolder());
+   	recapSelector.applySetting(
+   		mpeg_book_keeper.MPEGBookKeeper.settings.getRecapsFolder());
+   }
 }

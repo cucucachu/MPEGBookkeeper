@@ -13,6 +13,8 @@ public class SettingsGui extends JFrame implements ActionListener {
 	private final int frameWidth = 900;
 	private final int frameHeight = 280;
 	
+	private MPEGBookKeeperGui mainGui;
+	
 	private JPanel mainPanel;
 	
    private JPanel mpegBookKeeperPanel;
@@ -39,13 +41,15 @@ public class SettingsGui extends JFrame implements ActionListener {
    private JTextArea quarterlyReportText;
    private JButton quarterlyReportButton;
    
+   private JButton applyButton;
    private JButton saveButton;
    
    private Settings settings;
    
-   public SettingsGui (Settings settings){
+   public SettingsGui (MPEGBookKeeperGui gui, Settings settings){
    	super("Settings");
    	
+   	mainGui = gui;
    	
    	Dimension buttonSize;
    	this.settings = settings;
@@ -127,6 +131,9 @@ public class SettingsGui extends JFrame implements ActionListener {
       quarterlyReportPanel.add(quarterlyReportText);
       quarterlyReportPanel.add(quarterlyReportButton);
       
+      applyButton = new JButton("Apply");
+      applyButton.addActionListener(this);
+      
       saveButton = new JButton("Save");
       saveButton.addActionListener(this);
       
@@ -136,6 +143,7 @@ public class SettingsGui extends JFrame implements ActionListener {
       mainPanel.add(jcaPanel);
       mainPanel.add(pmWorkbookPanel);
       mainPanel.add(quarterlyReportPanel);
+      mainPanel.add(applyButton);
       mainPanel.add(saveButton);
       
       this.add(mainPanel);
@@ -158,6 +166,9 @@ public class SettingsGui extends JFrame implements ActionListener {
 		   	catch (SettingsException ex) {
 		   		System.out.println("Failed to save settings.");
 		   	}
+		   }
+		   if (source.compareTo("Apply") == 0) {
+		   	mainGui.applySettings();
 		   }
 		   else if (source.compareTo("MPEGBookKeeper Folder") == 0) {
 		      choice = chooseFolder(mpegBookKeeperText, settings.getMPEGBookKeeperFolder());

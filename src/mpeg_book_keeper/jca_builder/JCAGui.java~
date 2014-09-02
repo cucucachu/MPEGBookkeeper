@@ -30,7 +30,6 @@ public class JCAGui extends GuiTab {
       recapSelector.filesOnly();
       
       datePanel = new TextPanel("Week Ending Date:", "MM/DD/YYYY");
-      datePanel.setMaximumSize(new Dimension(600,30));
       
       selectionPanels.add(jcaSelector);
       selectionPanels.add(recapSelector);
@@ -54,5 +53,12 @@ public class JCAGui extends GuiTab {
 			output("   " + ex);
 			running.set(false);
 		}
+   }
+   
+   public void applySettings() {
+   	jcaFolderSelector.applySetting(
+   		mpeg_book_keeper.MPEGBookKeeper.settings.getJCAFolder());
+   	recapSelector.applySetting(
+   		mpeg_book_keeper.MPEGBookKeeper.settings.getRecapsFolder());
    }
 }

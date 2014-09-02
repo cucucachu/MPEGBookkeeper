@@ -56,4 +56,11 @@ public class WeeklyRecapGui extends GuiTab {
          running.set(false);
       }
    }
+   
+   public void applySettings() {
+      timeSheetsFolderSelect.applySetting(
+      	mpeg_book_keeper.MPEGBookKeeper.settings.getTimeSheetsFolder());
+      recapsFolderSelect.applySetting(
+      	mpeg_book_keeper.MPEGBookKeeper.settings.getRecapsFolder());
+   }
 }

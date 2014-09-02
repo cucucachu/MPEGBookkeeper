@@ -151,6 +151,13 @@ public class MPEGBookKeeperGui implements ActionListener {
    }
    
    private void editSettings() {
-   	MPEGBookKeeper.settingsGui = new SettingsGui(MPEGBookKeeper.settings);
+   	MPEGBookKeeper.settingsGui = new SettingsGui(this, MPEGBookKeeper.settings);
+   }
+   
+   public void applySettings() {
+   	wrGui.applySettings();
+		jcaGui.applySettings();
+		pmGui.applySettings();
+		qrGui.applySettings();
    }
 }

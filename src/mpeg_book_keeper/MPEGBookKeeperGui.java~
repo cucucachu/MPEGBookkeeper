@@ -140,7 +140,7 @@ public class MPEGBookKeeperGui implements ActionListener {
    private void openUserManual() {
    	File userManual;
    	
-   	userManual = new File("./MPEGBookKeeperUserManual.pdf");
+   	userManual = new File("MPEGBookKeeperUserManual.pdf");
    	try {
    		if (Desktop.isDesktopSupported())
    			Desktop.getDesktop().open(userManual);	
@@ -151,6 +151,6 @@ public class MPEGBookKeeperGui implements ActionListener {
    }
    
    private void editSettings() {
-   	MPEGBookKeeper.settingsGui = new SettingsGui(MPEGBookKeeper.settings);
+   	MPEGBookKeeper.settingsGui = new SettingsGui(this, MPEGBookKeeper.settings);
    }
 }

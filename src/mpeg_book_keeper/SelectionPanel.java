@@ -64,6 +64,13 @@ public class SelectionPanel extends JPanel implements ActionListener {
    	return path;
    }
    
+   public void applySetting(String setting) {
+   	if (new File(setting).exists()) {
+			folderSelectText.setText(setting);
+			dir = setting;
+		}
+   }
+   
    public void filesOnly() {
    	fileSelectionMode = JFileChooser.FILES_ONLY;
    }

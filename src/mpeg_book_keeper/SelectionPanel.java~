@@ -30,7 +30,7 @@ public class SelectionPanel extends JPanel implements ActionListener {
       selectButton = new JButton(buttonText);
       selectButton.addActionListener(this);
       selectButton.setPreferredSize(new Dimension(250, 30));
-      selectButton.setBackground(mpeg_book_keeper.MPEGBookKeeperGui.TAB_COLOR);
+      selectButton.setBackground(mpeg_book_keeper.MPEGBookKeeperGui.BUTTON_COLOR);
       //selectButton.setForeground(mpeg_book_keeper.MPEGBookKeeperGui.TEXT_COLOR);
             
       this.add(selectButton);
@@ -62,6 +62,13 @@ public class SelectionPanel extends JPanel implements ActionListener {
    		System.out.println(ex);
    	}
    	return path;
+   }
+   
+   public void applySettings(String setting) {
+   	if (new File(setting).exists()) {
+			folderSelectText.setText(setting);
+			dir = setting;
+		}
    }
    
    public void filesOnly() {

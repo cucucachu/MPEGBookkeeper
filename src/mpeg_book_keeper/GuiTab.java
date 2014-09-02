@@ -114,6 +114,8 @@ public abstract class GuiTab extends JPanel implements ActionListener {
    	}
    }
    
+   public abstract void applySettings();
+   
    public void processFinishedCallback() {
    	running.set(false);
    }
