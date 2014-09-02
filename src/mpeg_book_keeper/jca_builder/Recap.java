@@ -208,8 +208,9 @@ public class Recap {
             other = otherCell.getContents();
             type = typeCell.getContents();
             
-            if (classCode.compareTo("P3") == 0 || classCode.compareTo("P4") == 0) {
-               prevWage = classCode;
+            if (classCode.toUpperCase().trim().compareTo("P3") == 0 
+               || classCode.toUpperCase().trim().compareTo("P4") == 0) {
+               prevWage = classCode.toUpperCase().trim();
                classCode = "";  
             }
             else {

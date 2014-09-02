@@ -74,9 +74,9 @@ public class Settings {
 			str = in.next();
 			if (str.compareTo(key) == 0) {	
 				if (in.hasNext()) {
-					str = in.next();
-					if (str.charAt(0) == '=') {
-						setting = str;
+					str = in.nextLine();
+					if (str.charAt(0) == ' ' && str.charAt(1) == '=') {
+						setting = str.trim();
 					}
 				}
 			}

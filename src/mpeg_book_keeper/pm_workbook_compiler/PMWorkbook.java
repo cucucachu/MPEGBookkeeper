@@ -126,6 +126,14 @@ public class PMWorkbook {
                newCell = new jxl.write.Number(curCol, curRow, ((NumberCell)oldCell).getValue());
             else if (oldCell.getType().equals(CellType.NUMBER_FORMULA))
                newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
+            else if (oldCell.getType().equals(CellType.DATE_FORMULA))
+               newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
+            else if (oldCell.getType().equals(CellType.BOOLEAN_FORMULA))
+               newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
+            else if (oldCell.getType().equals(CellType.STRING_FORMULA))
+               newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
+            else if (oldCell.getType().equals(CellType.FORMULA_ERROR))
+               newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
             else
                newCell = new jxl.write.Label(curCol, curRow, oldCell.getContents());
             

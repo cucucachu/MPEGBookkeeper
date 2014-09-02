@@ -1,3 +1,5 @@
+package mpeg_book_keeper.jca_builder;
+
 import jxl.*;
 import jxl.write.*;
 import java.io.File;
@@ -206,7 +208,8 @@ public class Recap {
             other = otherCell.getContents();
             type = typeCell.getContents();
             
-            if (classCode.compareTo("P3") == 0 || classCode.compareTo("P4") == 0) {
+            if (classCode.toUpperCase().trim().compareTo("P3") == 0 
+               || classCode.toUpperCase().trim().compareTo("P4") == 0) {
                prevWage = classCode;
                classCode = "";  
             }
