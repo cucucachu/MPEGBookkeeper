@@ -41,11 +41,11 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="753"
-     inkscape:window-height="383"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
      inkscape:window-x="65"
      inkscape:window-y="24"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -54,7 +54,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -72,14 +72,14 @@
     <text
        xml:space="preserve"
        style="font-size:45.90569687px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#e3dbdb;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
-       x="90.990257"
+       x="110.99026"
        y="413.80453"
        id="text3834"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3836"
-         x="90.990257"
-         y="413.80453">MPEG Book Keeper</tspan></text>
+         x="110.99026"
+         y="413.80453">MPEG Bookkeeper</tspan></text>
     <g
        id="g3838"
        transform="matrix(0.70394093,0,0,0.70394093,205.83341,19.508652)">

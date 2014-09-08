@@ -1,5 +1,5 @@
 BUILD_DIR = ../build/
-ROOT_DIR = mpeg_book_keeper/
+ROOT_DIR = mpeg_bookkeeper/
 WEEKLY_RECAP_DIR = $(ROOT_DIR)weekly_recap/
 JCA_BUILDER_DIR = $(ROOT_DIR)jca_builder/
 PM_DIR = $(ROOT_DIR)pm_workbook_compiler/
@@ -8,8 +8,8 @@ COMPILER = javac -d ../build
 CLASSPATH = #-classpath .:../lib/jxl.jar
 
 default: \
-	$(BUILD_DIR)$(ROOT_DIR)MPEGBookKeeper.class \
-	$(BUILD_DIR)$(ROOT_DIR)MPEGBookKeeperGui.class \
+	$(BUILD_DIR)$(ROOT_DIR)MPEGBookkeeper.class \
+	$(BUILD_DIR)$(ROOT_DIR)MPEGBookkeeperGui.class \
 	$(BUILD_DIR)$(ROOT_DIR)Settings.class \
 	$(BUILD_DIR)$(ROOT_DIR)SettingsException.class \
 	$(BUILD_DIR)$(ROOT_DIR)SettingsGui.class \
@@ -54,12 +54,12 @@ default: \
 	$(BUILD_DIR)$(QR_DIR)StatusFile.class \
 	$(BUILD_DIR)$(QR_DIR)WriteOff.class \
 	
-#MPEG Book Keeper
-$(BUILD_DIR)$(ROOT_DIR)MPEGBookKeeper.class: $(ROOT_DIR)MPEGBookKeeper.java
-	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)MPEGBookKeeper.java
+#MPEG Bookkeeper
+$(BUILD_DIR)$(ROOT_DIR)MPEGBookkeeper.class: $(ROOT_DIR)MPEGBookkeeper.java
+	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)MPEGBookkeeper.java
 
-$(BUILD_DIR)$(ROOT_DIR)MPEGBookKeeperGui.class: $(ROOT_DIR)MPEGBookKeeperGui.java
-	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)MPEGBookKeeperGui.java
+$(BUILD_DIR)$(ROOT_DIR)MPEGBookkeeperGui.class: $(ROOT_DIR)MPEGBookkeeperGui.java
+	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)MPEGBookkeeperGui.java
 
 $(BUILD_DIR)$(ROOT_DIR)Settings.class: $(ROOT_DIR)Settings.java
 	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)Settings.java

@@ -1,3 +1,3 @@
 cd ../build
-java mpeg_book_keeper.MPEGBookKeeper
+java mpeg_bookkeeper.MPEGBookkeeper
 cd ../src
