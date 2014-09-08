@@ -132,8 +132,10 @@ public class PMWorkbook {
                newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
             else if (oldCell.getType().equals(CellType.STRING_FORMULA))
                newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
-            else if (oldCell.getType().equals(CellType.FORMULA_ERROR))
+            else if (oldCell.getType().equals(CellType.FORMULA_ERROR)) 
                newCell = new jxl.write.Formula(curCol, curRow, ((FormulaCell)oldCell).getFormula());
+            else if (oldCell.getType().equals(CellType.EMPTY))
+               newCell = new jxl.write.Blank(curCol, curRow);
             else
                newCell = new jxl.write.Label(curCol, curRow, oldCell.getContents());
             
