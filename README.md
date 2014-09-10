@@ -1,4 +1,5 @@
 MPEGBookkeeper
+
 Author: Cody Jones 2014
 
 MPEG Bookkeeper is a software aide which performs common and tedious data management
@@ -15,5 +16,6 @@ and projects on budget.
 MPEG Bookkeeper utilize the jexcel API in order to interact with excel spreadsheets. Many
 thanks to Andy Khan, the creator of this open source API. As required, MPEG Bookkeeper
 extends the jexcel API's GNU General Public License 2.0. For more on the jexcel API see
-http://www.andykhan.com/jexcelapi/ and http://jexcelapi.sourceforge.net/.
-==============
+http://www.andykhan.com/jexcelapi/ 
+and
+http://jexcelapi.sourcforge.net/
