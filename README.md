@@ -13,7 +13,7 @@ spreadsheet. The goal of MPEG Bookkeeper is to streamline the collection, storag
 distrobution of accounting data so that the accountant may focus on keepering employees
 and projects on budget.
 
-MPEG Bookkeeper utilize the jexcel API in order to interact with excel spreadsheets. Many
+MPEG Bookkeeper utilizes the jexcel API in order to interact with excel spreadsheets. Many
 thanks to Andy Khan, the creator of this open source API. As required, MPEG Bookkeeper
 extends the jexcel API's GNU General Public License 2.0. For more on the jexcel API see
 http://www.andykhan.com/jexcelapi/ 
