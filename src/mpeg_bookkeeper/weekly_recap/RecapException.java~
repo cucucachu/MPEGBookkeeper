@@ -1,0 +1,5 @@
+package mpeg_bookkeeper.weekly_recap;
+
+class TimeSheetFormatException extends Exception {
+   
+}

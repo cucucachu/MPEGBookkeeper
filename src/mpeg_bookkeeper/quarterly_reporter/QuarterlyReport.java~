@@ -1,0 +1,415 @@
+package mpeg_bookkeeper.quarterly_reporter;
+
+import jxl.*;
+import jxl.write.*;
+import java.io.File;
+import java.io.IOException;
+import jxl.read.biff.BiffException;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+public class QuarterlyReport {
+   private static final int ProjectNumberColumn = 0;
+   private static final int ProjectNameColumn = 1;
+   private static final int ProjectManagerColumn = 2;
+   private static final int PriorWriteOffsColumn = 3;
+   private static final int Q1WriteOffsColumn = 4;
+   private static final int Q2WriteOffsColumn = 5;
+   private static final int Q3WriteOffsColumn = 6;
+   private static final int NovWriteOffsColumn = 7;
+   private static final int Q4WriteOffsColumn = 8;
+   private static final int UnbilledChargesColumn = 9;
+   private static final int RemainingBudgetColumn = 10;
+   private static final int CheckWriteOffsColumn = 11;
+   private static final int CheckBilledColumn = 12;
+   private static final int CheckCarryOverColumn = 13;
+   private static final int StatusColumn = 14;
+   private static final int SOCColumn = 15;
+   private static final int LabelRow = 4;
+   private static final int TitleRow = 1;
+   
+   private static final String ProjectNumberLabel = "Project";
+   private static final String ProjectNameLabel = "Name";
+   private static final String ProjectManagerLabel = "PM";
+   private static final String PriorWriteOffsLabel = "Prior";
+   private static final String Q1WriteOffsLabel = "Q1";
+   private static final String Q2WriteOffsLabel = "Q2";
+   private static final String Q3WriteOffsLabel = "Q3";
+   private static final String NovWriteOffsLabel = "Nov";
+   private static final String Q4WriteOffsLabel = "Q4";
+   private static final String UnbilledChargesLabel = "Unbilled Charges";
+   private static final String RemainingBudgetLabel = "Remaining Budget";
+   private static final String CheckWriteOffsLabel = "W.O.";
+   private static final String CheckBilledLabel = "Bill";
+   private static final String CheckCarryOverLabel = "C.O.";
+   private static final String StatusLabel = "Status";
+   private static final String SOCLabel = "SOC";
+   private static final String Title = "Write Ons/Offs thru ";
+   
+   private static final String warning = "**Warning: Unbilled totals are calculated " 
+      + "at run time; they are not formulas.";
+   
+   private static final int[] columnWidths 
+      = {9, 15, 5, 9, 9, 9, 9, 9, 9, 10, 10, 4, 4, 4, 2, 10};
+
+   private String manager;
+   private ArrayList<Project> projects;
+   private String folder;
+   private String fileName;
+   private String date;
+   private File file;
+   private WritableWorkbook workbook;
+   private WritableSheet sheet;
+   
+   public QuarterlyReport(String folder, String manager, String date) {
+      Calendar calendar;
+      
+      
+      calendar = Calendar.getInstance();
+      this.date = date;
+      /*date = String.format("%d_%d_%d", calendar.get(Calendar.MONTH) + 1, 
+         calendar.get(Calendar.DATE), calendar.get(Calendar.YEAR));*/
+   
+      this.folder = folder;
+      this.fileName = folder + "/WIP_Report_" + manager.replace("/", "+") + "_" 
+         + date.replace("/", "_") + ".xls";
+      this.file = new File(fileName);
+      this.manager = manager;
+      this.projects = new ArrayList<Project>();
+   }
+   
+   public void addProject(Project project) {
+      projects.add(project);
+   }
+      
+   public String getManager() {
+      return manager;
+   }
+   
+   public void write() throws JCAException, IOException, BiffException,
+      WriteException {
+      jxl.write.Label labelCell;
+      jxl.write.Number numberCell;
+      jxl.write.Blank blankCell;
+      jxl.write.Formula formulaCell;
+      
+      ArrayList<WriteOff> writeOffs;
+      Double[] writeOffAmounts;
+      
+      Double[] unbilledTotals;
+      
+      jxl.write.WritableCellFormat labelFormat;
+      jxl.write.WritableCellFormat moneyFormat;
+      jxl.write.WritableCellFormat blankFormat;
+      int curRow;
+      
+      String[] quarterNames = {"Prior", "Q1", "Q2", "Q3", "Nov", "Q4"};
+      
+      writeOffAmounts = new Double[6];
+      
+      workbook = Workbook.createWorkbook(file);
+      sheet = workbook.createSheet("Quarterly Report", 0);
+      
+      labelFormat = new jxl.write.WritableCellFormat(
+         new jxl.write.WritableFont(WritableFont.ARIAL, 10, WritableFont.BOLD));
+      labelFormat.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN);
+      
+      blankFormat = new jxl.write.WritableCellFormat();
+      blankFormat.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN);
+         
+      moneyFormat = new jxl.write.WritableCellFormat(jxl.write.NumberFormats.FLOAT);
+      moneyFormat.setAlignment(jxl.format.Alignment.RIGHT);
+      moneyFormat.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN);
+      
+      labelCell = new jxl.write.Label(1, TitleRow, Title + date);//, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(ProjectNumberColumn, LabelRow, 
+         ProjectNumberLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(ProjectNameColumn, LabelRow, 
+         ProjectNameLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(ProjectManagerColumn, LabelRow, 
+         ProjectManagerLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(PriorWriteOffsColumn, LabelRow, 
+         PriorWriteOffsLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(Q1WriteOffsColumn, LabelRow, 
+         Q1WriteOffsLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(Q2WriteOffsColumn, LabelRow, 
+         Q2WriteOffsLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(Q3WriteOffsColumn, LabelRow, 
+         Q3WriteOffsLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(NovWriteOffsColumn, LabelRow, 
+         NovWriteOffsLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(Q4WriteOffsColumn, LabelRow, 
+         Q4WriteOffsLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(UnbilledChargesColumn, LabelRow, 
+         UnbilledChargesLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(RemainingBudgetColumn, LabelRow, 
+         RemainingBudgetLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(CheckWriteOffsColumn, LabelRow, 
+         CheckWriteOffsLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(CheckBilledColumn, LabelRow, 
+         CheckBilledLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(CheckCarryOverColumn, LabelRow, 
+         CheckCarryOverLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(StatusColumn, LabelRow, 
+         StatusLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      labelCell = new jxl.write.Label(SOCColumn, LabelRow, 
+         SOCLabel, labelFormat);
+      sheet.addCell(labelCell);
+      
+      curRow = LabelRow + 1;
+      
+      for (Project project : projects) {
+         writeOffs = project.getWriteOffs();
+         
+         for (int i = 0; i < writeOffAmounts.length; i++)
+            writeOffAmounts[i] = new Double(0);
+            
+         if (writeOffs != null) {
+            for (WriteOff wo : writeOffs) {
+               for (int i = 0; i < quarterNames.length; i++) {
+                  if (wo.getQuarter().compareTo(quarterNames[i]) == 0)
+                     writeOffAmounts[i] = wo.getAmount();
+               }  
+            }
+         }
+      
+         labelCell = new jxl.write.Label(ProjectNumberColumn, curRow, 
+            project.getProjectNumber(), blankFormat);
+         sheet.addCell(labelCell);
+         
+         labelCell = new jxl.write.Label(ProjectNameColumn, curRow, 
+            project.getProjectName(), blankFormat);
+         sheet.addCell(labelCell);
+         
+         labelCell = new jxl.write.Label(ProjectManagerColumn, curRow, 
+            project.getManager(), blankFormat);
+         sheet.addCell(labelCell);
+         
+         numberCell = new jxl.write.Number(UnbilledChargesColumn, curRow, 
+            project.getUnbilledCharges(), moneyFormat);
+         sheet.addCell(numberCell);
+         
+         numberCell = new jxl.write.Number(RemainingBudgetColumn, curRow, 
+            project.getRemainingBudget(), moneyFormat);
+         sheet.addCell(numberCell);
+         
+         if (writeOffAmounts[0] != 0) {
+            numberCell = new jxl.write.Number(PriorWriteOffsColumn, curRow,
+               writeOffAmounts[0], moneyFormat);
+            sheet.addCell(numberCell);
+         }
+         else {
+            blankCell = new jxl.write.Blank(PriorWriteOffsColumn, curRow, blankFormat);
+            sheet.addCell(blankCell);
+         }
+         
+         if (writeOffAmounts[1] != 0) {
+            numberCell = new jxl.write.Number(Q1WriteOffsColumn , curRow,
+               writeOffAmounts[1], moneyFormat);
+            sheet.addCell(numberCell);
+         }
+         else {
+            blankCell = new jxl.write.Blank(Q1WriteOffsColumn, curRow, blankFormat);
+            sheet.addCell(blankCell);
+         }
+         
+         if (writeOffAmounts[2] != 0) {
+            numberCell = new jxl.write.Number(Q2WriteOffsColumn, curRow,
+               writeOffAmounts[2], moneyFormat);
+            sheet.addCell(numberCell);
+         }
+         else {
+            blankCell = new jxl.write.Blank(Q2WriteOffsColumn, curRow, blankFormat);
+            sheet.addCell(blankCell);
+         }
+         
+         if (writeOffAmounts[3] != 0) {
+            numberCell = new jxl.write.Number(Q3WriteOffsColumn, curRow,
+               writeOffAmounts[3], moneyFormat);
+            sheet.addCell(numberCell);
+         }
+         else {
+            blankCell = new jxl.write.Blank(Q3WriteOffsColumn, curRow, blankFormat);
+            sheet.addCell(blankCell);
+         }
+         
+         if (writeOffAmounts[4] != 0) {
+            numberCell = new jxl.write.Number(NovWriteOffsColumn, curRow,
+               writeOffAmounts[4], moneyFormat);
+            sheet.addCell(numberCell);
+         }
+         else {
+            blankCell = new jxl.write.Blank(NovWriteOffsColumn, curRow, blankFormat);
+            sheet.addCell(blankCell);
+         }
+         
+         if (writeOffAmounts[5] != 0) {
+            numberCell = new jxl.write.Number(Q4WriteOffsColumn, curRow,
+               writeOffAmounts[5], moneyFormat);
+            sheet.addCell(numberCell);
+         }
+         else {
+            blankCell = new jxl.write.Blank(Q4WriteOffsColumn, curRow, blankFormat);
+            sheet.addCell(blankCell);
+         }
+         
+         blankCell = new jxl.write.Blank(CheckWriteOffsColumn, curRow, blankFormat);
+         sheet.addCell(blankCell);
+         
+         blankCell = new jxl.write.Blank(CheckBilledColumn, curRow, blankFormat);
+         sheet.addCell(blankCell);
+         
+         blankCell = new jxl.write.Blank(CheckCarryOverColumn, curRow, blankFormat);
+         sheet.addCell(blankCell);
+         
+         labelCell = new jxl.write.Label(StatusColumn, curRow,
+             project.getStatus(), blankFormat);
+         sheet.addCell(labelCell);
+         
+         labelCell = new jxl.write.Label(SOCColumn, curRow, project.getSoc(), blankFormat);
+         sheet.addCell(labelCell);
+         
+         curRow++;
+      }
+      
+      unbilledTotals = new Double[4]; //{active, dormant, closed, grandTotal}
+      for (int i = 0; i < unbilledTotals.length; i++)
+         unbilledTotals[i] = new Double(0);
+      
+      for (Project project : projects) {
+         if (project.getStatus().compareTo("") == 0)
+            unbilledTotals[0] += project.getUnbilledCharges();
+         else if (project.getStatus().compareTo("D") == 0)
+            unbilledTotals[1] += project.getUnbilledCharges();
+         else if (project.getStatus().compareTo("C") == 0)
+            unbilledTotals[2] += project.getUnbilledCharges();
+            
+         unbilledTotals[3] += project.getUnbilledCharges();
+      }
+      
+      curRow++;
+      
+      labelCell = new jxl.write.Label(ProjectNameColumn, curRow, 
+            "Totals:", labelFormat);
+      sheet.addCell(labelCell);
+      
+      /*
+      formulaCell = new jxl.write.Formula(PriorWriteOffsColumn, curRow,
+         "SUM(D"+(LabelRow+2)+":D"+(curRow), blankFormat);
+      sheet.addCell(formulaCell);
+      */
+      
+      formulaCell = new jxl.write.Formula(Q1WriteOffsColumn, curRow,
+         "SUM(E"+(LabelRow+2)+":E"+(curRow), blankFormat);
+      sheet.addCell(formulaCell);
+      
+      formulaCell = new jxl.write.Formula(Q2WriteOffsColumn, curRow,
+         "SUM(F"+(LabelRow+2)+":F"+(curRow), blankFormat);
+      sheet.addCell(formulaCell);
+      
+      formulaCell = new jxl.write.Formula(Q3WriteOffsColumn, curRow,
+         "SUM(G"+(LabelRow+2)+":G"+(curRow), blankFormat);
+      sheet.addCell(formulaCell);
+      
+      formulaCell = new jxl.write.Formula(NovWriteOffsColumn, curRow,
+         "SUM(H"+(LabelRow+2)+":H"+(curRow), blankFormat);
+      sheet.addCell(formulaCell);
+      
+      formulaCell = new jxl.write.Formula(Q4WriteOffsColumn, curRow,
+         "SUM(I"+(LabelRow+2)+":I"+(curRow), blankFormat);
+      sheet.addCell(formulaCell);
+      
+      curRow += 2;
+      
+      labelCell = new jxl.write.Label(Q4WriteOffsColumn, curRow,
+         "Unbilled Totals", labelFormat);
+      sheet.addCell(labelCell);
+      
+      sheet.mergeCells(Q4WriteOffsColumn, curRow, Q4WriteOffsColumn + 1, curRow);
+      
+      curRow++;
+      
+      labelCell = new jxl.write.Label(Q4WriteOffsColumn, curRow,
+         "Active:", labelFormat);
+      sheet.addCell(labelCell);
+      
+      numberCell = new jxl.write.Number(UnbilledChargesColumn, curRow,
+         unbilledTotals[0], moneyFormat);
+      sheet.addCell(numberCell);
+      
+      curRow++;
+      
+      labelCell = new jxl.write.Label(Q4WriteOffsColumn, curRow,
+         "Dormant:", labelFormat);
+      sheet.addCell(labelCell);
+      
+      numberCell = new jxl.write.Number(UnbilledChargesColumn, curRow,
+         unbilledTotals[1], moneyFormat);
+      sheet.addCell(numberCell);
+      
+      curRow++;
+      
+      labelCell = new jxl.write.Label(Q4WriteOffsColumn, curRow,
+         "Closed:", labelFormat);
+      sheet.addCell(labelCell);
+      
+      numberCell = new jxl.write.Number(UnbilledChargesColumn, curRow,
+         unbilledTotals[2], moneyFormat);
+      sheet.addCell(numberCell);
+      
+      curRow++;
+      
+      labelCell = new jxl.write.Label(Q4WriteOffsColumn, curRow,
+         "Total:", labelFormat);
+      sheet.addCell(labelCell);
+      
+      numberCell = new jxl.write.Number(UnbilledChargesColumn, curRow,
+         unbilledTotals[3], moneyFormat);
+      sheet.addCell(numberCell);
+      
+      curRow += 2;
+      
+      labelCell = new jxl.write.Label(ProjectNameColumn, curRow, 
+         warning);//, labelFormat);
+      sheet.addCell(labelCell);
+      
+      for (int column = 0; column < columnWidths.length; column++)
+         sheet.setColumnView(column, columnWidths[column]);
+      
+      workbook.write();
+      workbook.close();
+   }
+   
+}

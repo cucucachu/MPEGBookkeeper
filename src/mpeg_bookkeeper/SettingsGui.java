@@ -1,0 +1,241 @@
+package mpeg_bookkeeper;
+
+import javax.swing.*;
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.filechooser.*;
+
+/**
+ * A JFrame containing Selection Panels from which the user
+ * may set, apply, and save settings.
+ *
+ * @author Cody Jones
+ * @version 1.0
+ */
+public class SettingsGui extends JFrame implements ActionListener {
+	private final int COLS = 55;
+	private final int buttonWidth = 220;
+	private final int buttonHeight = 25;
+	private final int frameWidth = 900;
+	private final int frameHeight = 280;
+	
+	private MPEGBookkeeperGui mainGui;
+	
+	private JPanel mainPanel;
+	
+   private JPanel mpegBookkeeperPanel;
+   private JTextArea mpegBookkeeperText;
+   private JButton mpegBookkeeperButton;
+   
+   private JPanel timeSheetPanel;
+   private JTextArea timeSheetText;
+   private JButton timeSheetButton;
+   
+   private JPanel recapPanel;
+   private JTextArea recapText;
+   private JButton recapButton;
+   
+   private JPanel jcaPanel;
+   private JTextArea jcaText;
+   private JButton jcaButton;
+   
+   private JPanel pmWorkbookPanel;
+   private JTextArea pmWorkbookText;
+   private JButton pmWorkbookButton;
+   
+   private JPanel quarterlyReportPanel;
+   private JTextArea quarterlyReportText;
+   private JButton quarterlyReportButton;
+   
+   private JButton applyButton;
+   private JButton saveButton;
+   
+   private Settings settings;
+   
+   public SettingsGui (MPEGBookkeeperGui gui, Settings settings){
+   	super("Settings");
+   	
+   	mainGui = gui;
+   	
+   	Dimension buttonSize;
+   	this.settings = settings;
+      this.setSize(frameWidth, frameHeight);
+      this.setResizable(false);
+      
+      mainPanel = new JPanel();
+      
+      buttonSize = new Dimension(buttonWidth, buttonHeight);
+      mpegBookkeeperPanel = new JPanel();
+      mpegBookkeeperPanel.setSize(100, 100);
+      mpegBookkeeperText = new JTextArea(settings.getMPEGBookkeeperFolder());
+      mpegBookkeeperText.setEditable(false);
+      mpegBookkeeperText.setMargin(new Insets(5,5,5,5));
+      mpegBookkeeperText.setColumns(COLS);
+      mpegBookkeeperButton = new JButton("MPEGBookkeeper Folder");
+      mpegBookkeeperButton.addActionListener(this);
+      mpegBookkeeperButton.setPreferredSize(buttonSize);
+      mpegBookkeeperPanel.add(mpegBookkeeperText);
+      mpegBookkeeperPanel.add(mpegBookkeeperButton);
+      
+      timeSheetPanel = new JPanel();
+      timeSheetPanel.setSize(100, 100);
+      timeSheetText = new JTextArea(settings.getTimeSheetsFolder());
+      timeSheetText.setEditable(false);
+      timeSheetText.setMargin(new Insets(5,5,5,5));
+      timeSheetText.setColumns(COLS);
+      timeSheetButton = new JButton("TimeSheets Folder");
+      timeSheetButton.addActionListener(this);
+      timeSheetButton.setPreferredSize(buttonSize);
+      timeSheetPanel.add(timeSheetText);
+      timeSheetPanel.add(timeSheetButton);
+      
+      recapPanel = new JPanel();
+      recapPanel.setSize(100, 100);
+      recapText = new JTextArea(settings.getRecapsFolder());
+      recapText.setEditable(false);
+      recapText.setMargin(new Insets(5,5,5,5));
+      recapText.setColumns(COLS);
+      recapButton = new JButton("Recaps Folder");
+      recapButton.addActionListener(this);
+      recapButton.setPreferredSize(buttonSize);
+      recapPanel.add(recapText);
+      recapPanel.add(recapButton);
+      
+      jcaPanel = new JPanel();
+      jcaPanel.setSize(100, 100);
+      jcaText = new JTextArea(settings.getJCAFolder());
+      jcaText.setEditable(false);
+      jcaText.setMargin(new Insets(5,5,5,5));
+      jcaText.setColumns(COLS);
+      jcaButton = new JButton("JCAs Folder");
+      jcaButton.addActionListener(this);
+      jcaButton.setPreferredSize(buttonSize);
+      jcaPanel.add(jcaText);
+      jcaPanel.add(jcaButton);
+      
+      pmWorkbookPanel = new JPanel();
+      pmWorkbookPanel.setSize(100, 100);
+      pmWorkbookText = new JTextArea(settings.getPMWorkbooksFolder());
+      pmWorkbookText.setEditable(false);
+      pmWorkbookText.setMargin(new Insets(5,5,5,5));
+      pmWorkbookText.setColumns(COLS);
+      pmWorkbookButton = new JButton("PM Workbooks Folder");
+      pmWorkbookButton.addActionListener(this);
+      pmWorkbookButton.setPreferredSize(buttonSize);
+      pmWorkbookPanel.add(pmWorkbookText);
+      pmWorkbookPanel.add(pmWorkbookButton);
+      
+      quarterlyReportPanel = new JPanel();
+      quarterlyReportPanel.setSize(100, 100);
+      quarterlyReportText = new JTextArea(settings.getQuarterlyReportsFolder());
+      quarterlyReportText.setEditable(false);
+      quarterlyReportText.setMargin(new Insets(5,5,5,5));
+      quarterlyReportText.setColumns(COLS);
+      quarterlyReportButton = new JButton("Quarterly Reports Folder");
+      quarterlyReportButton.addActionListener(this);
+      quarterlyReportButton.setPreferredSize(buttonSize);
+      quarterlyReportPanel.add(quarterlyReportText);
+      quarterlyReportPanel.add(quarterlyReportButton);
+      
+      applyButton = new JButton("Apply");
+      applyButton.addActionListener(this);
+      
+      saveButton = new JButton("Save");
+      saveButton.addActionListener(this);
+      
+      //mainPanel.add(mpegBookkeeperPanel);
+      mainPanel.add(timeSheetPanel);
+      mainPanel.add(recapPanel);
+      mainPanel.add(jcaPanel);
+      mainPanel.add(pmWorkbookPanel);
+      mainPanel.add(quarterlyReportPanel);
+      mainPanel.add(applyButton);
+      mainPanel.add(saveButton);
+      
+      this.add(mainPanel);
+      this.setVisible(true);
+      
+   }
+   
+   public void actionPerformed(ActionEvent e) {
+      String source;
+      String choice;      
+      
+      source = e.getActionCommand();
+      choice = null;
+      
+      try {
+		   if (source.compareTo("Save") == 0) {
+		   	try {
+		   		settings.saveSettings();
+		   	}
+		   	catch (SettingsException ex) {
+		   		System.out.println("Failed to save settings.");
+		   	}
+		   }
+		   if (source.compareTo("Apply") == 0) {
+		   	mainGui.applySettings();
+		   }
+		   else if (source.compareTo("MPEGBookkeeper Folder") == 0) {
+		      choice = chooseFolder(mpegBookkeeperText, settings.getMPEGBookkeeperFolder());
+		      if (choice != null) 
+		      	settings.setMPEGBookkeeperFolder(choice);
+		   }
+		   else if (source.compareTo("TimeSheets Folder") == 0) {
+		      choice = chooseFolder(timeSheetText, settings.getTimeSheetsFolder());
+		      if (choice != null) 
+		      	settings.setTimeSheetsFolder(choice);
+		   }
+		   else if (source.compareTo("Recaps Folder") == 0) {
+		      choice = chooseFolder(recapText, settings.getRecapsFolder());
+		      if (choice != null) 
+		      	settings.setRecapsFolder(choice);
+		   }
+		   else if (source.compareTo("JCAs Folder") == 0) {
+		      choice = chooseFolder(jcaText, settings.getJCAFolder());
+		      if (choice != null) 
+		      	settings.setJCAFolder(choice);
+		   }
+		   else if (source.compareTo("PM Workbooks Folder") == 0) {
+		      choice = chooseFolder(pmWorkbookText, settings.getPMWorkbooksFolder());
+		      if (choice != null) 
+		      	settings.setPMWorkbooksFolder(choice);
+		   }
+		   else if (source.compareTo("Quarterly Reports Folder") == 0) {
+		      choice = chooseFolder(quarterlyReportText, 
+		      	settings.getQuarterlyReportsFolder());
+		      if (choice != null) 
+		      	settings.setQuarterlyReportsFolder(choice);
+		   }
+		}
+		catch (Exception ex) {
+			System.out.println(source + " failed. " + ex);
+		}
+   }
+   
+   private String chooseFolder(JTextArea toSet, String setting) {
+		File dir;
+		int userAction;
+		String newSetting;
+		JFileChooser chooser;
+		
+		newSetting = null;
+		
+		dir = new File(setting);
+		if (dir.isDirectory())
+			chooser = new JFileChooser(dir);
+		else
+			chooser = new JFileChooser();
+			
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		userAction = chooser.showOpenDialog(this);
+		
+		if (userAction == JFileChooser.APPROVE_OPTION) {
+			newSetting = chooser.getSelectedFile().getAbsolutePath();
+			toSet.setText(newSetting);
+		}
+		
+		return newSetting;
+   }
+}

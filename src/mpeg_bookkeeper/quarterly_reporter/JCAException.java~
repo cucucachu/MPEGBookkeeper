@@ -1,0 +1,7 @@
+package mpeg_bookkeeper.quarterly_reporter;
+
+public class JCAException extends Exception {
+   public JCAException(String msg) {
+      super(msg);
+   }
+}

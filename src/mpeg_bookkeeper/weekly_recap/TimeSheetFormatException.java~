@@ -1,0 +1,7 @@
+package mpeg_bookkeeper.weekly_recap;
+
+public class TimeSheetFormatException extends Exception {
+   public TimeSheetFormatException(String msg) {
+      super(msg);
+   }
+}
