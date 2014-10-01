@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.Point;
 
+/**
+ * Reads and stores information from a time sheet.
+ *
+ * @author Cody Jones
+ * @version 1.0
+ */
 public class TimeSheet {
   
    private final Point ClassCodeLocation = new Point(8, 2);
@@ -306,6 +312,14 @@ public class TimeSheet {
                other = otherCell.getContents().trim();
                type = typeCell.getContents().trim();
                prevWage = prevWageCell.getContents().trim();
+               
+               try {
+               	if (fdt.compareTo("") != 0)
+							new Double(fdt);
+					}
+					catch (NumberFormatException ex) {
+						throw new TimeSheetFormatException("Found a non-number in the fdt column, row " + curRow);
+					}
                
                if (Double.parseDouble(hoursCell.getContents()) != 0
                   || Double.parseDouble(milesCell.getContents()) != 0

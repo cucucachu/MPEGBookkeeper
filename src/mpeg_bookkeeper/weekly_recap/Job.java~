@@ -1,5 +1,11 @@
 package mpeg_bookkeeper.weekly_recap;
 
+/**
+ * Stores job info read from a timesheet to be written to a recap file.
+ *
+ * @author Cody Jones
+ * @version 1.0
+ */
 public class Job implements Comparable<Job> {
    String jobName;
    String jobNoStr;
@@ -67,7 +73,7 @@ public class Job implements Comparable<Job> {
    }
    
    public String toString() {
-      return jobName + ": " + jobNoStr;
+      return jobName + ": " + jobNoStr + " " + fdt;
    }
    
    private void emptyStringsToNull() {

@@ -10,6 +10,12 @@ import java.lang.InterruptedException;
 
 import mpeg_bookkeeper.SubProcess;
 
+/**
+ * Creates a recap file by reading and compiling data from time sheets.
+ *
+ * @author Cody Jones
+ * @version 1.0
+ */
 public class WeeklyRecap extends SubProcess {
 
    private static final String newline = System.lineSeparator();
@@ -81,7 +87,7 @@ public class WeeklyRecap extends SubProcess {
                failedSheets.add(fileName);
             }
             catch (TimeSheetFormatException ex) {
-               gui.output(fileName + " is incorrectly formatted. "
+               gui.output("   " + fileName + " is incorrectly formatted. "
                   + ex.getMessage());
                failedSheets.add(fileName);
             }
@@ -114,12 +120,16 @@ public class WeeklyRecap extends SubProcess {
             }
          }
          
-         recap = new Recap(allJobs);
-         recap.makeRecap(recapFile.getAbsolutePath());
-         recap.writeRecap();
-         
-         gui.output(newline + "Recap Succesful!" + newline);
-         
+         try {
+		      recap = new Recap(allJobs);
+		      recap.makeRecap(recapFile.getAbsolutePath());
+		      recap.writeRecap();
+         	gui.output(newline + "Recap Succesful!" + newline);
+		   }
+		   catch (Exception ex) {
+		   	gui.output("Recap failed, " + ex);
+		   }
+		   
          gui.output("Saving logfile to logfile.txt" + newline);
          gui.saveLogFile(timeSheetFolderPath + "logfile.txt");
       }

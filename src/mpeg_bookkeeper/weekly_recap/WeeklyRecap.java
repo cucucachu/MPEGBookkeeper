@@ -64,22 +64,23 @@ public class WeeklyRecap extends SubProcess {
          
          for (String fileName : timeSheetFileNames) {
          	pollStop();
+         	gui.output("Reading " + fileName);
             try {
                curTimeSheet = new TimeSheet(timeSheetFolderPath + fileName);
                allJobs.addAll(curTimeSheet.getJobs());
                comments.addAll(curTimeSheet.getComments());
                curTimeSheet.close();
-               gui.output(fileName + " read succesfully.");
+               gui.output("   " + fileName + " read succesfully.");
             }
             catch (BiffException ex) {
-               gui.output(fileName + " is not a timesheet or is not in the"
+               gui.output("   " + fileName + " is not a timesheet or is not in the"
                   + " .xls format. Please remove this file, handle it manually or "
                   + "convert it to .xls format. The data from this file will not be "
                   + "included in the output file.");
                failedSheets.add(fileName);
             }
             catch (IndexOutOfBoundsException ex) {
-               gui.output(fileName + " contains less than 5 sheets in its "
+               gui.output("   " + fileName + " contains less than 5 sheets in its "
                   + "workbook. The info from this timesheet will not be included in "
                   + "the output file. Reformat " + fileName + " to the standard "
                   + "timesheet format and rerun this program or add its info to the"
@@ -87,7 +88,7 @@ public class WeeklyRecap extends SubProcess {
                failedSheets.add(fileName);
             }
             catch (TimeSheetFormatException ex) {
-               gui.output(fileName + " is incorrectly formatted. "
+               gui.output("   " + fileName + " is incorrectly formatted. "
                   + ex.getMessage());
                failedSheets.add(fileName);
             }
@@ -120,12 +121,16 @@ public class WeeklyRecap extends SubProcess {
             }
          }
          
-         recap = new Recap(allJobs);
-         recap.makeRecap(recapFile.getAbsolutePath());
-         recap.writeRecap();
-         
-         gui.output(newline + "Recap Succesful!" + newline);
-         
+         try {
+		      recap = new Recap(allJobs);
+		      recap.makeRecap(recapFile.getAbsolutePath());
+		      recap.writeRecap();
+         	gui.output(newline + "Recap Succesful!" + newline);
+		   }
+		   catch (Exception ex) {
+		   	gui.output("Recap failed, " + ex);
+		   }
+		   
          gui.output("Saving logfile to logfile.txt" + newline);
          gui.saveLogFile(timeSheetFolderPath + "logfile.txt");
       }

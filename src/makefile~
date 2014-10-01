@@ -54,7 +54,7 @@ default: \
 	$(BUILD_DIR)$(QR_DIR)StatusFile.class \
 	$(BUILD_DIR)$(QR_DIR)WriteOff.class \
 	
-#MPEG Book Keeper
+#MPEG Bookkeeper
 $(BUILD_DIR)$(ROOT_DIR)MPEGBookkeeper.class: $(ROOT_DIR)MPEGBookkeeper.java
 	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)MPEGBookkeeper.java
 

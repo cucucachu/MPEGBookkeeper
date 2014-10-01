@@ -20,6 +20,7 @@ default: \
 	\
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Job.class \
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Recap.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheet.class \
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheetFormatException.class \
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecap.class \
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)WeeklyRecapGui.class \
@@ -88,6 +89,9 @@ $(BUILD_DIR)$(WEEKLY_RECAP_DIR)Job.class: $(WEEKLY_RECAP_DIR)Job.java
 
 $(BUILD_DIR)$(WEEKLY_RECAP_DIR)Recap.class: $(WEEKLY_RECAP_DIR)Recap.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)Recap.java
+
+$(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheet.class: $(WEEKLY_RECAP_DIR)TimeSheet.java
+	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)TimeSheet.java
 
 $(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheetFormatException.class: $(WEEKLY_RECAP_DIR)TimeSheetFormatException.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)TimeSheetFormatException.java

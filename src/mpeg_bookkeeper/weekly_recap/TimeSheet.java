@@ -313,6 +313,14 @@ public class TimeSheet {
                type = typeCell.getContents().trim();
                prevWage = prevWageCell.getContents().trim();
                
+               try {
+               	if (fdt.compareTo("") != 0)
+							new Double(fdt);
+					}
+					catch (NumberFormatException ex) {
+						throw new TimeSheetFormatException("Found a non-number in the fdt column, row " + (curRow + 1));
+					}
+               
                if (Double.parseDouble(hoursCell.getContents()) != 0
                   || Double.parseDouble(milesCell.getContents()) != 0
                   || fdtCell.getContents().compareTo("") != 0
