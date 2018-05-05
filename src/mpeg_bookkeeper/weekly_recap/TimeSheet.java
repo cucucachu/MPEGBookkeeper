@@ -145,10 +145,6 @@ public class TimeSheet {
          jobRow = jobCell.getRow();
          dateRow = jobRow + 1;
          curRow = jobRow + 2;
-
-         System.out.println(jobRow);
-         System.out.println(dateRow);
-         System.out.println(curRow);
          
          nameCell = timeSheet.getCell(nameCol, curRow);
          jobCell = timeSheet.getCell(jobNoCol, curRow);
@@ -181,7 +177,6 @@ public class TimeSheet {
                hours = hoursCell.getContents();
                prevWage = prevWageCell.getContents();
                
-               System.out.println("Starting Hours Rows");
                // Loop over each day in the row to get hours, OT, and comments.
                for (int dayCol = hoursCol + 1; dayCol < hoursCol + 15; dayCol++) {
                   dayHoursCell = timeSheet.getCell(dayCol, curRow);
@@ -190,8 +185,7 @@ public class TimeSheet {
                      dayHoursStr = dayHoursCell.getContents();
                      commentText = getCellComment(dayHoursCell);
 
-                     System.out.println("curDateCell - x: " + curDateCell.getColumn() + ", y: " + curDateCell.getRow() + 1);
-                     
+                    
                      if (commentText != null){
 
                         comment = new Comment(this.initials, curDateCell.getContents(), commentText);
@@ -211,22 +205,18 @@ public class TimeSheet {
                         }
                      }
                      catch (Exception ex) {
-                        System.out.println("dayHoursCell with Error: " + dayHoursCell.getColumn() + " " + dayHoursCell.getRow());
-                        System.out.println("dayHoursCell Contents: \"" + dayHoursCell.getContents() +"\"");
                         throw new TimeSheetFormatException("Found a non-number in "
                            + "a single day's hours column. " + ex);
                      }
                   }
                }
 
-               System.out.println("Ending Hours Rows");
                
                try {
                   if (Double.parseDouble(hoursCell.getContents()) != 0)
                      jobs.add(new Job(jobName, jobNoStr, initials, classCode, hours,
                         miles, fdt, other, type, prevWage, comments));
                   
-                  System.out.println("Created Job");
                   curRow++;
                   nameCell = timeSheet.getCell(nameCol, curRow);
                   jobCell = timeSheet.getCell(jobNoCol, curRow);
@@ -371,7 +361,6 @@ public class TimeSheet {
          }
       }
 
-      System.out.println("Finished with Timesheet");
    }
    
    private String getCellComment(Cell cell) {

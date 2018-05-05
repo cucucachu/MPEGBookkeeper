@@ -84,6 +84,15 @@ public class Job implements Comparable<Job> {
    public ArrayList<Comment> getComments() {
       return this.comments;
    }
+
+   public String getCommentsAsString() {
+      String commentsString = "";
+      for (Comment comment : comments) {
+         commentsString += comment.getComment() + "\n";
+      }
+
+      return commentsString;
+   }
    
    private void emptyStringsToNull() {
       if (jobName != null && jobName.isEmpty())

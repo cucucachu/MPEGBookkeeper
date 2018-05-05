@@ -25,6 +25,7 @@ public class Recap {
    public static final int fdtCol = 6;
    public static final int otherCol = 7;
    public static final int typeCol = 8;
+   public static final int commentsColumn = 9;
    public static final String recapEnd = "End of Recap";
 
    ArrayList<Job> allJobs;
@@ -51,6 +52,7 @@ public class Recap {
       Label fdtLabel = new Label(fdtCol, 0, "FDT");
       Label otherLabel = new Label(otherCol, 0, "Other");
       Label typeLabel = new Label(typeCol, 0, "Type");
+      Label commentLabel = new Label(commentsColumn, 0, "Comments");
       Label endCell;
       
       jxl.write.Number hours;
@@ -68,6 +70,7 @@ public class Recap {
       sheet.addCell(fdtLabel);
       sheet.addCell(otherLabel);
       sheet.addCell(typeLabel);
+      sheet.addCell(commentLabel);
       Collections.sort(allJobs);
       
       for (Job job : allJobs) {
@@ -114,6 +117,12 @@ public class Recap {
          if (job.other != null) {
             otherLabel = new Label(otherCol, curRow, job.other);
             sheet.addCell(otherLabel);
+         }
+         
+         if (job.comments != null && job.comments.isEmpty() == false) {
+            //System.out.println("comment " + job.getCommentsAsString());
+            commentLabel = new Label(commentsColumn, curRow, job.getCommentsAsString());
+            sheet.addCell(commentLabel);
          }
          curRow++;
       }
