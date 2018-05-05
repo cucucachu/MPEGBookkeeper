@@ -40,7 +40,7 @@ public class WeeklyRecap extends SubProcess {
       ArrayList<String> timeSheetFileNames;
       ArrayList<String> failedSheets;
       ArrayList<Job> allJobs;
-      ArrayList<String> comments;
+      ArrayList<Comment> comments;
       Recap recap;
       File recapFile;
       
@@ -49,7 +49,7 @@ public class WeeklyRecap extends SubProcess {
          timeSheetFolder = new File(timeSheetFolderPath);
          allTimeSheets = timeSheetFolder.listFiles();
          timeSheetFileNames = new ArrayList<String>();
-         comments = new ArrayList<String>();
+         comments = new ArrayList<Comment>();
          failedSheets = new ArrayList<String>();
          allJobs = new ArrayList<Job>();
          
@@ -68,7 +68,11 @@ public class WeeklyRecap extends SubProcess {
             try {
                curTimeSheet = new TimeSheet(timeSheetFolderPath + fileName);
                allJobs.addAll(curTimeSheet.getJobs());
-               comments.addAll(curTimeSheet.getComments());
+               for (Job job: allJobs) {
+                  if (job.getComments() != null)
+                  comments.addAll(job.getComments());
+               }
+               // comments.addAll(curTimeSheet.getComments());
                curTimeSheet.close();
                gui.output("   " + fileName + " read succesfully.");
             }
@@ -94,12 +98,12 @@ public class WeeklyRecap extends SubProcess {
             }
          }
                      
-         /*
+         
          gui.output(newline + "The following comments were find in cells on a timesheet:");
-         for (String comment : comments) {
-            gui.output(">>" + comment);
+         for (Comment comment : comments) {
+            gui.output(">>" + comment.getComment());
          }
-         */
+         
          gui.output(newline + "Failed to extract info from the following files:");
          for (String fileName : failedSheets) {
             gui.output(fileName);

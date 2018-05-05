@@ -41,7 +41,7 @@ public class TimeSheet {
    private String employee;
    private String initials;
    private ArrayList<Job> jobs;
-   private ArrayList<String> comments;
+   // private ArrayList<Comment> comments;
    private Workbook wb;
    private Sheet timeSheet;
    private String fileName;
@@ -49,7 +49,7 @@ public class TimeSheet {
    public TimeSheet(String filePath) 
       throws IOException, BiffException, TimeSheetFormatException {
       jobs = new ArrayList<Job>();
-      comments = new ArrayList<String>();
+      // comments = new ArrayList<Comment>();
       fileName = filePath;
       wb = Workbook.getWorkbook(new File(filePath));
       timeSheet = wb.getSheet(0);
@@ -68,6 +68,8 @@ public class TimeSheet {
       int otherCol;
       int typeCol;
       int prevWageCol;
+      int jobRow;
+      int dateRow;
       int curRow;
       double dayHours;
       double overTime;
@@ -83,10 +85,11 @@ public class TimeSheet {
       Cell typeCell;
       Cell prevWageCell;
       Cell dayHoursCell;
+      Cell curDateCell;
       
       String jobName;
       String jobNoStr;
-      String initials;
+      String initials; 
       String classCode; 
       String hours;
       String miles;
@@ -95,8 +98,10 @@ public class TimeSheet {
       String type;
       String prevWage;
       String dayHoursStr;
-      String comment;
-      
+
+      String commentText;
+      Comment comment;
+      ArrayList<Comment> comments;
       
       classCodeCell = timeSheet.getCell((int)ClassCodeLocation.getX(),
          (int)ClassCodeLocation.getY());
@@ -137,7 +142,13 @@ public class TimeSheet {
          initialsCol = initialsCell.getColumn();
          hoursCol = hoursCell.getColumn();
          prevWageCol = prevWageCell.getColumn();
-         curRow = jobCell.getRow() + 2;
+         jobRow = jobCell.getRow();
+         dateRow = jobRow + 1;
+         curRow = jobRow + 2;
+
+         System.out.println(jobRow);
+         System.out.println(dateRow);
+         System.out.println(curRow);
          
          nameCell = timeSheet.getCell(nameCol, curRow);
          jobCell = timeSheet.getCell(jobNoCol, curRow);
@@ -145,7 +156,7 @@ public class TimeSheet {
          hoursCell = timeSheet.getCell(hoursCol, curRow);
          prevWageCell = timeSheet.getCell(prevWageCol, curRow);
          
-                 
+         //Loop over Hours Rows, to get hours per job. Stop Loop once we reach Total Chargeable Hours row.        
          while (timeSheet.getCell(0, curRow).getContents().compareTo(TerminatorOne) != 0) {
             if (hoursCell.getType().equals(CellType.NUMBER_FORMULA) == false)
                throw new TimeSheetFormatException("Missing formula in first totals cell.");
@@ -160,6 +171,7 @@ public class TimeSheet {
                type = null;
                prevWage = null;
                overTime = 0;
+               comments = new ArrayList<Comment>();
                
                jobName = nameCell.getContents();
                jobNoStr = jobCell.getContents();
@@ -169,14 +181,23 @@ public class TimeSheet {
                hours = hoursCell.getContents();
                prevWage = prevWageCell.getContents();
                
+               System.out.println("Starting Hours Rows");
+               // Loop over each day in the row to get hours, OT, and comments.
                for (int dayCol = hoursCol + 1; dayCol < hoursCol + 15; dayCol++) {
                   dayHoursCell = timeSheet.getCell(dayCol, curRow);
+                  curDateCell = timeSheet.getCell(dayCol, dateRow);
                   if (dayHoursCell.getType() != CellType.EMPTY) {
                      dayHoursStr = dayHoursCell.getContents();
-                     comment = getCellComment(dayHoursCell);
+                     commentText = getCellComment(dayHoursCell);
+
+                     System.out.println("curDateCell - x: " + curDateCell.getColumn() + ", y: " + curDateCell.getRow() + 1);
                      
-                     if (comment != null)
+                     if (commentText != null){
+
+                        comment = new Comment(this.initials, curDateCell.getContents(), commentText);
                         comments.add(comment);
+                     }
+
                         
                      try {
                         if (dayHoursStr.trim().compareTo("") == 0)
@@ -190,23 +211,29 @@ public class TimeSheet {
                         }
                      }
                      catch (Exception ex) {
+                        System.out.println("dayHoursCell with Error: " + dayHoursCell.getColumn() + " " + dayHoursCell.getRow());
+                        System.out.println("dayHoursCell Contents: \"" + dayHoursCell.getContents() +"\"");
                         throw new TimeSheetFormatException("Found a non-number in "
-                           + "a single day's hours column.");
+                           + "a single day's hours column. " + ex);
                      }
                   }
                }
+
+               System.out.println("Ending Hours Rows");
                
                try {
                   if (Double.parseDouble(hoursCell.getContents()) != 0)
                      jobs.add(new Job(jobName, jobNoStr, initials, classCode, hours,
-                        miles, fdt, other, type, prevWage));
-                        
+                        miles, fdt, other, type, prevWage, comments));
+                  
+                  System.out.println("Created Job");
                   curRow++;
                   nameCell = timeSheet.getCell(nameCol, curRow);
                   jobCell = timeSheet.getCell(jobNoCol, curRow);
                   initialsCell = timeSheet.getCell(initialsCol, curRow);
                   hoursCell = timeSheet.getCell(hoursCol, curRow);
-                  prevWageCell = timeSheet.getCell(prevWageCol, curRow);               
+                  prevWageCell = timeSheet.getCell(prevWageCol, curRow);
+                  curDateCell = null;               
                }
                catch (NumberFormatException ex) {
                   throw new TimeSheetFormatException("An entry in the Row " + (curRow + 1)
@@ -327,7 +354,7 @@ public class TimeSheet {
                   || otherCell.getContents().compareTo("") != 0
                   || typeCell.getContents().compareTo("") != 0 ) {
                   jobs.add(new Job(jobName, jobNoStr, initials, classCode, hours,
-                     miles, fdt, other, type, prevWage));
+                     miles, fdt, other, type, prevWage, null));
                }
                
                curRow++;
@@ -343,6 +370,8 @@ public class TimeSheet {
             }
          }
       }
+
+      System.out.println("Finished with Timesheet");
    }
    
    private String getCellComment(Cell cell) {
@@ -359,8 +388,8 @@ public class TimeSheet {
          if (features != null)
             comment = features.getComment();
          
-         if (comment != null)
-            comment = this.initials + " Cell: " + col + row + ": \"" + comment + "\"";
+         // if (comment != null)
+         //    comment = this.initials + " Cell: " + col + row + ": \"" + comment + "\"";
       }
       
       return comment;
@@ -370,9 +399,9 @@ public class TimeSheet {
       return jobs;
    }
    
-   public ArrayList<String> getComments() {
-      return comments;
-   }
+   // public ArrayList<Comment> getComments() {
+   //    return comments;
+   // }
    
    void printJobs() {
       for (Job job : jobs)

@@ -1,5 +1,7 @@
 package mpeg_bookkeeper.weekly_recap;
 
+import java.util.ArrayList;
+
 /**
  * Stores job info read from a timesheet to be written to a recap file.
  *
@@ -17,11 +19,12 @@ public class Job implements Comparable<Job> {
    String other;
    String type;
    String prevWage;
+   ArrayList<Comment> comments;
    
    
    public Job(String jobName, String jobNoStr, String initials, String classCode,
       String hours, String miles, String fdt, String other, String type,
-      String prevWage) {
+      String prevWage, ArrayList<Comment> comments) {
       
       this.jobName = jobName;
       this.jobNoStr = jobNoStr;
@@ -33,7 +36,9 @@ public class Job implements Comparable<Job> {
       this.other = other;
       this.type = type;
       this.prevWage = prevWage;
-      
+      this.comments = comments;
+
+
       emptyStringsToNull();
    }
    
@@ -74,6 +79,10 @@ public class Job implements Comparable<Job> {
    
    public String toString() {
       return jobName + ": " + jobNoStr;
+   }
+
+   public ArrayList<Comment> getComments() {
+      return this.comments;
    }
    
    private void emptyStringsToNull() {
