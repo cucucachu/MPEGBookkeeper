@@ -25,7 +25,7 @@ public class Recap {
    public static final int fdtCol = 6;
    public static final int otherCol = 7;
    public static final int typeCol = 8;
-   public static final int commentsColumn = 9;
+   public static final int commentsColumn = 10;
    public static final String recapEnd = "End of Recap";
 
    ArrayList<Job> allJobs;

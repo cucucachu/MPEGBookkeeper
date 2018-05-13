@@ -12,6 +12,6 @@ public class Comment {
 	}
 
 	public String getComment() {
-		return this.initials + " (" + this.date + "): " + this.comment;
+		return "<" + this.initials + " " + this.date + "> " + this.comment;
 	}
 }

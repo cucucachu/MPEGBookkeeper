@@ -26,6 +26,7 @@ public class Recap {
    public static final int otherCol = 7;
    public static final int typeCol = 8;
    public static final int rejectCol = 9;
+   public static final int commentCol = 10;
    public static final int StartRow = 3;
    public static final String recapEnd = "End of Recap";
    public static final String Title = "Bounced Jobs";
@@ -161,6 +162,7 @@ public class Recap {
       Cell fdtCell;
       Cell otherCell;
       Cell typeCell;
+      Cell commentCell;
          
       String jobName;
       String jobNoStr;
@@ -171,8 +173,8 @@ public class Recap {
       String fdt;
       String other;
       String type;
-      String prevWage;  
-       
+      String prevWage;
+      String commentString;
       int curRow;
       
       badJobs = new ArrayList<Job>();
@@ -202,6 +204,9 @@ public class Recap {
          fdtCell = sheet.getCell(fdtCol, curRow);
          otherCell = sheet.getCell(otherCol, curRow);
          typeCell = sheet.getCell(typeCol, curRow);
+         System.out.println("before");
+         commentCell = sheet.getCell(commentCol, curRow);
+         System.out.println("after");
          
          while (sheet.getCell(0,curRow).getContents().compareTo(recapEnd) != 0) {
             jobName = jobNameCell.getContents();
@@ -213,6 +218,7 @@ public class Recap {
             fdt = fdtCell.getContents();
             other = otherCell.getContents();
             type = typeCell.getContents();
+            commentString = commentCell.getContents();
             
             if (classCode.toUpperCase().trim().compareTo("P3") == 0 
                || classCode.toUpperCase().trim().compareTo("P4") == 0) {
@@ -234,7 +240,7 @@ public class Recap {
                   || fdt.compareTo("") != 0 || other.compareTo("") != 0 
                   || type.compareTo("") != 0) {
                   Job badJob = new Job(jobName, jobNoStr, initials, classCode, hours,
-                        miles, fdt, other, type, prevWage);
+                        miles, fdt, other, type, prevWage, commentString);
                   badJob.setRejection((new Rejection(badJob.toString(), "Missing job number, "
                      + "employee initials, or class code and prevailing wage.")));
                   badJobs.add(badJob);
@@ -242,7 +248,7 @@ public class Recap {
             }
             else {
                allJobs.add(new Job(jobName, jobNoStr, initials, classCode, hours,
-                     miles, fdt, other, type, prevWage));
+                     miles, fdt, other, type, prevWage, commentString));
             }         
             curRow++;
             
@@ -255,6 +261,7 @@ public class Recap {
             fdtCell = sheet.getCell(fdtCol, curRow);
             otherCell = sheet.getCell(otherCol, curRow);
             typeCell = sheet.getCell(typeCol, curRow);
+            commentCell = sheet.getCell(commentCol, curRow);
          }
       }
       catch (RecapFormatException ex) {

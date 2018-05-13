@@ -19,6 +19,7 @@ default: \
 	$(BUILD_DIR)$(ROOT_DIR)SubProcess.class \
 	\
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Job.class \
+	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Comment.class \
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Recap.class \
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheet.class \
 	$(BUILD_DIR)$(WEEKLY_RECAP_DIR)TimeSheetFormatException.class \
@@ -84,6 +85,9 @@ $(BUILD_DIR)$(ROOT_DIR)SubProcess.class: $(ROOT_DIR)SubProcess.java
 	$(COMPILER) $(CLASSPATH) $(ROOT_DIR)SubProcess.java
 
 #Weekly Recap
+$(BUILD_DIR)$(WEEKLY_RECAP_DIR)Comment.class: $(WEEKLY_RECAP_DIR)Comment.java
+	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)Comment.java
+
 $(BUILD_DIR)$(WEEKLY_RECAP_DIR)Job.class: $(WEEKLY_RECAP_DIR)Job.java
 	$(COMPILER) $(CLASSPATH) $(WEEKLY_RECAP_DIR)Job.java
 

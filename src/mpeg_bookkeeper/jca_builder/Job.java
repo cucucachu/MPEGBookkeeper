@@ -19,12 +19,13 @@ public class Job implements Comparable<Job> {
    String other;
    String type;
    String prevWage;
+   String comment;
    Rejection rejection;
    
    
    public Job(String jobName, String jobNoStr, String initials, String classCode,
       String hours, String miles, String fdt, String other, String type,
-      String prevWage) {
+      String prevWage, String comment) {
       
       this.jobName = jobName;
       this.jobNoStr = jobNoStr;
@@ -36,6 +37,7 @@ public class Job implements Comparable<Job> {
       this.other = other;
       this.type = type;
       this.prevWage = prevWage;
+      this.comment = comment;
       this.rejection = null;
       
       emptyStringsToNull();
@@ -102,6 +104,8 @@ public class Job implements Comparable<Job> {
       if (type != null && type.isEmpty())
          type = null;
       if (prevWage != null && prevWage.isEmpty())
+         prevWage = null;
+      if (comment != null && comment.isEmpty())
          prevWage = null;
    }
    
