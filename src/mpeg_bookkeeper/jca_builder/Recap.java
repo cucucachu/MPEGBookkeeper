@@ -69,6 +69,7 @@ public class Recap {
          Label otherLabel = new Label(otherCol, StartRow, "Other");
          Label typeLabel = new Label(typeCol, StartRow, "Type");
          Label rejectLabel = new Label(rejectCol, StartRow, "Reason");
+         Label commentLabel = new Label(commentCol, StartRow, "Comments");
          Label endCell;
          
          jxl.write.Number hours;
@@ -87,6 +88,8 @@ public class Recap {
          sheet.addCell(fdtLabel);
          sheet.addCell(otherLabel);
          sheet.addCell(typeLabel);
+         sheet.addCell(rejectLabel);
+         sheet.addCell(commentLabel);
          Collections.sort(allJobs);
          
          for (Job job : allJobs) {
@@ -138,6 +141,11 @@ public class Recap {
             if (job.rejection != null) {
                rejectLabel = new Label(rejectCol, curRow, job.rejection.getReason());
                sheet.addCell(rejectLabel);
+            }
+            
+            if (job.comment != null) {
+               commentLabel = new Label(commentCol, curRow, job.comment);
+               sheet.addCell(commentLabel);
             }
             
             curRow++;
