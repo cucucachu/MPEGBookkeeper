@@ -19,3 +19,15 @@ extends the jexcel API's GNU General Public License 2.0. For more on the jexcel 
 http://www.andykhan.com/jexcelapi/ 
 and
 http://jexcelapi.sourcforge.net/
+
+
+
+
+To Make-Build-Publish:
+
+start in the folder 'src'. Run Makefile. Next run the script 'run.bat' to run the program. 
+
+Once done debugging, use this command from inside the 'build' folder to create a jar
+"jar -cfvm MPEGBookkeeper.jar MPEGBookkeeper.mf mpeg_bookkeeper jxl resources functions_en.properties"
+
+Once done testing the jar, use the program launch4j.exe to package the jar into a windows executable.
