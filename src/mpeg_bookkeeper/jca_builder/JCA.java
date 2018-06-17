@@ -196,6 +196,8 @@ public class JCA {
       int fdtRow;
       int weekRow;
       
+
+
       jxl.format.CellFormat format;
       WritableCellFeatures features;
       
@@ -213,6 +215,7 @@ public class JCA {
                   output("   Putting " + job + " at row " + jobRow + " in " + this);
                   format = sheet.getCell(CurrentWeekColumn, jobRow).getCellFormat();
                   hours = new jxl.write.Number(CurrentWeekColumn, jobRow, job.hours, format);
+
                   if (job.comment != null) {
                      System.out.println("Writing Comment \"" + job.comment + "\"");
                      features = new WritableCellFeatures();

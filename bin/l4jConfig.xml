@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>/home/cody/Professional/MillerPacific/MPEGBookkeeper/build/MPEGBookkeeper.jar</jar>
-  <outfile>/home/cody/Professional/MillerPacific/MPEGBookkeeper/bin/MPEGBookkeeper.exe</outfile>
+  <jar>C:\Users\code_\dev\MPEGBookkeeper\build\MPEGBookkeeper.jar</jar>
+  <outfile>C:\Users\code_\dev\MPEGBookkeeper\bin\MPEGBookkeeper_v1.1.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -11,11 +11,13 @@
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>/home/cody/Professional/MillerPacific/MPEGBookkeeper/resources/book.ico</icon>
+  <icon>C:\Users\code_\dev\MPEGBookkeeper\resources\book.ico</icon>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>1.0.0</minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>

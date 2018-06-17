@@ -106,7 +106,7 @@ public class Job implements Comparable<Job> {
       if (prevWage != null && prevWage.isEmpty())
          prevWage = null;
       if (comment != null && comment.isEmpty())
-         prevWage = null;
+         comment = null;
    }
    
    public boolean isVehicle() {
